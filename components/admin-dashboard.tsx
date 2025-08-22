@@ -78,7 +78,7 @@ const initialProjects: Project[] = [
     type: "Commercial",
     status: "Completed",
     description: "State-of-the-art shopping center with sustainable design and premium retail spaces.",
-    completion: "Completed 2024",
+    completion: "Completed 2025",
     units: 150,
     floors: 3,
     price: "Retail spaces from $2,500/sqft",
@@ -95,7 +95,7 @@ const initialEnquiries: Enquiry[] = [
     email: "john@example.com",
     phone: "+1 (555) 123-4567",
     message: "Interested in a 2-bedroom unit with city view. Please contact me with available options.",
-    date: "2024-01-15",
+    date: "2025-01-15",
     status: "New",
   },
   {
@@ -106,7 +106,7 @@ const initialEnquiries: Enquiry[] = [
     email: "sarah@business.com",
     phone: "+1 (555) 987-6543",
     message: "Looking for retail space for my boutique. What are the available sizes and pricing?",
-    date: "2024-01-14",
+    date: "2025-01-14",
     status: "Contacted",
   },
 ]

@@ -38,7 +38,7 @@ const projects = [
     status: "Completed",
     image: "/placeholder.svg?height=300&width=400&text=Green+Valley+Mall",
     description: "State-of-the-art shopping center with sustainable design and premium retail spaces.",
-    completion: "Completed 2024",
+    completion: "Completed 2025",
     units: 150,
     floors: 3,
     amenities: ["Food Court", "Cinema", "Parking", "Green Spaces", "EV Charging"],
@@ -361,7 +361,7 @@ export default function ProjectsPage() {
             </div>
           </div>
           <div className="border-t mt-8 pt-8 text-center text-muted-foreground">
-            <p>&copy; 2024 PrimeRealty. All rights reserved.</p>
+            <p>&copy; 2025 PrimeRealty. All rights reserved.</p>
           </div>
         </div>
       </footer>

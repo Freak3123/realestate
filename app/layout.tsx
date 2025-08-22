@@ -6,9 +6,8 @@ import "./globals.css"
 import { AuthProvider } from "@/hooks/use-auth"
 
 export const metadata: Metadata = {
-  title: "v0 App",
-  description: "Created with v0",
-  generator: "v0.app",
+  title: "my App",
+  description: "Created by me",
 }
 
 export default function RootLayout({

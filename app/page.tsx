@@ -24,7 +24,7 @@ const featuredProjects = [
     status: "Completed",
     image: "/modern-shopping-mall.png",
     description: "State-of-the-art shopping center with sustainable design and premium retail spaces.",
-    completion: "Completed 2024",
+    completion: "Completed 2025",
   },
   {
     id: 3,
@@ -317,7 +317,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="border-t mt-8 pt-8 text-center text-muted-foreground">
-            <p>&copy; 2024 PrimeRealty. All rights reserved.</p>
+            <p>&copy; 2025 PrimeRealty. All rights reserved.</p>
           </div>
         </div>
       </footer>

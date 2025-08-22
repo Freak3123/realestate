@@ -94,7 +94,7 @@ const milestones = [
   { year: "2018", event: "Achieved LEED certification for sustainable building" },
   { year: "2020", event: "Launched affordable housing initiative" },
   { year: "2022", event: "Reached 100 completed projects milestone" },
-  { year: "2024", event: "Opened new regional office and expanded team" },
+  { year: "2025", event: "Opened new regional office and expanded team" },
 ]
 
 export default function AboutPage() {
@@ -381,7 +381,7 @@ export default function AboutPage() {
             </div>
           </div>
           <div className="border-t mt-8 pt-8 text-center text-muted-foreground">
-            <p>&copy; 2024 PrimeRealty. All rights reserved.</p>
+            <p>&copy; 2025 PrimeRealty. All rights reserved.</p>
           </div>
         </div>
       </footer>
