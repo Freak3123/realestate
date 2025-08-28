@@ -405,7 +405,7 @@ function ProjectCard({
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
       <div className="relative">
-        <img src={project.image || "/placeholder.svg"} alt={project.title} className="w-full h-64 object-cover" />
+        <img src={project.image || "/placeholder.svg"} alt={project.title} className="w-full h-64 object-contain" />
         <Badge variant={project.status === "Completed" ? "default" : "secondary"} className="absolute top-4 left-4">
           {project.status}
         </Badge>
