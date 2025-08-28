@@ -18,20 +18,38 @@ import Image from "next/image"
 // Extended project data
 const projects = [
   {
+
     id: 1,
-    title: "Skyline Residences",
-    location: "Downtown District",
+    title: "Geeta Residency",
+    location: "Geeta Residency, Sahadevkhunta ,Near Chandmari field. In front of Biswswar shiva temple.",
     type: "Residential",
     status: "Ongoing",
-    image: "/placeholder.svg?height=300&width=400&text=Skyline+Residences",
-    description: "Luxury residential complex with 200 units featuring modern amenities and panoramic city views.",
+    image: "/project1.jpg",
+    description: "",
     completion: "Q2 2025",
-    units: 200,
+    units: 3,
     floors: 25,
     amenities: ["Swimming Pool", "Gym", "Rooftop Garden", "Parking", "24/7 Security"],
     price: "Starting from $450,000",
     progress: 65,
+
   },
+
+  // {
+  //   id: 1,
+  //   title: "Skyline Residences",
+  //   location: "Downtown District",
+  //   type: "Residential",
+  //   status: "Ongoing",
+  //   image: "/placeholder.svg?height=300&width=400&text=Skyline+Residences",
+  //   description: "Luxury residential complex with 200 units featuring modern amenities and panoramic city views.",
+  //   completion: "Q2 2025",
+  //   units: 200,
+  //   floors: 25,
+  //   amenities: ["Swimming Pool", "Gym", "Rooftop Garden", "Parking", "24/7 Security"],
+  //   price: "Starting from $450,000",
+  //   progress: 65,
+  // },
   {
     id: 2,
     title: "Green Valley Mall",
@@ -47,36 +65,36 @@ const projects = [
     price: "Retail spaces from $2,500/sqft",
     progress: 100,
   },
-  {
-    id: 3,
-    title: "Oceanview Towers",
-    location: "Coastal Area",
-    type: "Mixed-Use",
-    status: "Ongoing",
-    image: "/placeholder.svg?height=300&width=400&text=Oceanview+Towers",
-    description: "Mixed-use development combining residential, commercial, and recreational facilities.",
-    completion: "Q4 2025",
-    units: 300,
-    floors: 35,
-    amenities: ["Beach Access", "Marina", "Shopping", "Restaurants", "Spa"],
-    price: "Starting from $650,000",
-    progress: 40,
-  },
-  {
-    id: 4,
-    title: "Tech Hub Plaza",
-    location: "Business District",
-    type: "Commercial",
-    status: "Ongoing",
-    image: "/placeholder.svg?height=300&width=400&text=Tech+Hub+Plaza",
-    description: "Modern office complex designed for tech companies with flexible workspaces.",
-    completion: "Q1 2026",
-    units: 50,
-    floors: 20,
-    amenities: ["Co-working Spaces", "Conference Rooms", "Cafeteria", "Parking", "Fiber Internet"],
-    price: "Office spaces from $35/sqft/month",
-    progress: 25,
-  },
+  // {
+  //   id: 3,
+  //   title: "Oceanview Towers",
+  //   location: "Coastal Area",
+  //   type: "Mixed-Use",
+  //   status: "Ongoing",
+  //   image: "/placeholder.svg?height=300&width=400&text=Oceanview+Towers",
+  //   description: "Mixed-use development combining residential, commercial, and recreational facilities.",
+  //   completion: "Q4 2025",
+  //   units: 300,
+  //   floors: 35,
+  //   amenities: ["Beach Access", "Marina", "Shopping", "Restaurants", "Spa"],
+  //   price: "Starting from $650,000",
+  //   progress: 40,
+  // },
+  // {
+  //   id: 4,
+  //   title: "Tech Hub Plaza",
+  //   location: "Business District",
+  //   type: "Commercial",
+  //   status: "Ongoing",
+  //   image: "/placeholder.svg?height=300&width=400&text=Tech+Hub+Plaza",
+  //   description: "Modern office complex designed for tech companies with flexible workspaces.",
+  //   completion: "Q1 2026",
+  //   units: 50,
+  //   floors: 20,
+  //   amenities: ["Co-working Spaces", "Conference Rooms", "Cafeteria", "Parking", "Fiber Internet"],
+  //   price: "Office spaces from $35/sqft/month",
+  //   progress: 25,
+  // },
   {
     id: 5,
     title: "Heritage Gardens",
@@ -92,21 +110,21 @@ const projects = [
     price: "Starting from $550,000",
     progress: 100,
   },
-  {
-    id: 6,
-    title: "Riverside Commons",
-    location: "Waterfront",
-    type: "Mixed-Use",
-    status: "Ongoing",
-    image: "/placeholder.svg?height=300&width=400&text=Riverside+Commons",
-    description: "Waterfront development with residential units, retail spaces, and public promenade.",
-    completion: "Q3 2025",
-    units: 180,
-    floors: 15,
-    amenities: ["Waterfront Promenade", "Boat Dock", "Retail Spaces", "Park", "Cycling Path"],
-    price: "Starting from $520,000",
-    progress: 55,
-  },
+  // {
+  //   id: 6,
+  //   title: "Riverside Commons",
+  //   location: "Waterfront",
+  //   type: "Mixed-Use",
+  //   status: "Ongoing",
+  //   image: "/placeholder.svg?height=300&width=400&text=Riverside+Commons",
+  //   description: "Waterfront development with residential units, retail spaces, and public promenade.",
+  //   completion: "Q3 2025",
+  //   units: 180,
+  //   floors: 15,
+  //   amenities: ["Waterfront Promenade", "Boat Dock", "Retail Spaces", "Park", "Cycling Path"],
+  //   price: "Starting from $520,000",
+  //   progress: 55,
+  // },
 ]
 
 export default function ProjectsPage() {
@@ -418,7 +436,7 @@ function ProjectCard({
       <CardContent className="space-y-4">
         <p className="text-muted-foreground text-sm">{project.description}</p>
 
-        <div className="grid grid-cols-2 gap-4 text-sm">
+        {/* <div className="grid grid-cols-2 gap-4 text-sm">
           <div className="flex items-center gap-2">
             <Home className="h-4 w-4 text-muted-foreground" />
             <span>{project.units} units</span>
@@ -427,7 +445,7 @@ function ProjectCard({
             <Building2 className="h-4 w-4 text-muted-foreground" />
             <span>{project.floors} floors</span>
           </div>
-        </div>
+        </div> */}
 
         <div className="space-y-2">
           <p className="text-sm font-medium">Key Amenities:</p>
