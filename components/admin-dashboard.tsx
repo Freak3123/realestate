@@ -25,7 +25,6 @@ import {
   AlertCircle,
   CheckCircle,
 } from "lucide-react"
-import { useAuth } from "@/hooks/use-auth"
 import Link from "next/link"
 
 // Types
@@ -112,7 +111,6 @@ const initialEnquiries: Enquiry[] = [
 ]
 
 export function AdminDashboard() {
-  const { user, signOut } = useAuth()
   const [activeTab, setActiveTab] = useState("overview")
   const [projects, setProjects] = useState<Project[]>(initialProjects)
   const [enquiries, setEnquiries] = useState<Enquiry[]>(initialEnquiries)
@@ -215,7 +213,7 @@ export function AdminDashboard() {
               </Button>
             </nav>
           </div>
-          <div className="flex items-center gap-4">
+          {/* <div className="flex items-center gap-4">
             <span className="text-sm text-muted-foreground">Welcome, {user?.name}</span>
             <Button variant="outline" size="sm" asChild>
               <Link href="/">
@@ -227,7 +225,7 @@ export function AdminDashboard() {
               <LogOut className="h-4 w-4 mr-2" />
               Sign Out
             </Button>
-          </div>
+          </div> */}
         </div>
       </header>
 
