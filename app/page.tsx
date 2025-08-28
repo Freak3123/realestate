@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Building2, MapPin, Phone, Mail, Users, Award, TrendingUp } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 
 // Sample project data
 const featuredProjects = [
@@ -72,8 +73,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-2">
-              <Building2 className="h-8 w-8 text-primary" />
-              <span className="font-bold text-xl text-foreground">PrimeRealty</span>
+              <Image src="/logo.png" alt="PrimeRealty Logo" width={180} height={180} />
             </div>
             <div className="hidden md:flex items-center gap-8">
               <Link href="/" className="text-foreground hover:text-primary transition-colors">
@@ -303,15 +303,18 @@ export default function HomePage() {
               <div className="space-y-2">
                 <p className="text-muted-foreground flex items-center gap-2">
                   <Phone className="h-4 w-4" />
-                  +1 (555) 123-4567
+                  +91 9692727075
+
                 </p>
                 <p className="text-muted-foreground flex items-center gap-2">
                   <Mail className="h-4 w-4" />
-                  info@primerealty.com
+                  lifesparkinfra@gmail.com
                 </p>
                 <p className="text-muted-foreground flex items-center gap-2">
                   <MapPin className="h-4 w-4" />
-                  123 Business District, City
+                   Plot no- 817/1243, M/s Lifespark Infra & Consulting PRIVATE LIMITED
+ Telenga Sahi New Bridge, Bhaskarganj, Balasore, Odisha, 756001
+
                 </p>
               </div>
             </div>

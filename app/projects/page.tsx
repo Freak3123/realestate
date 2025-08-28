@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState , useEffect} from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -12,6 +12,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Building2, MapPin, Phone, Mail, Calendar, Home, ArrowLeft } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
+
 
 // Extended project data
 const projects = [
@@ -115,6 +117,11 @@ export default function ProjectsPage() {
     phone: "",
     message: "",
   })
+  const [isMounted, setIsMounted] = useState(false)
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+  if (!isMounted) return null
 
   const ongoingProjects = projects.filter((p) => p.status === "Ongoing")
   const completedProjects = projects.filter((p) => p.status === "Completed")
@@ -136,8 +143,8 @@ export default function ProjectsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-2">
-              <Building2 className="h-8 w-8 text-primary" />
-              <span className="font-bold text-xl text-foreground">PrimeRealty</span>
+          <Image src="/logo.png" alt="PrimeRealty Logo" width={180} height={180} />
+              
             </div>
             <div className="hidden md:flex items-center gap-8">
               <Link href="/" className="text-muted-foreground hover:text-primary transition-colors">
