@@ -64,37 +64,34 @@ const teamMembers = [
 
 const values = [
   {
-    title: "Quality Excellence",
+    title: "Integrity & Transparency",
     description:
-      "We never compromise on quality, ensuring every project meets the highest standards of construction and design.",
-    icon: Award,
+      "We believe trust is the foundation of long-term partnerships.",
+    icon: Building2, 
   },
   {
-    title: "Community Focus",
+    title: "Quality First",
     description:
-      "Our developments are designed to enhance communities and create lasting positive impact for residents.",
+      "Every project is delivered with precision, safety, and durability.",
+    icon: TrendingUp, 
+  },
+  {
+    title: "Innovation & Sustainability",
+    description: "We embrace modern technologies and eco-friendly practices.",
     icon: Users,
   },
   {
-    title: "Sustainable Development",
-    description: "We prioritize environmental responsibility and sustainable practices in all our projects.",
-    icon: TrendingUp,
-  },
-  {
-    title: "Innovation",
-    description: "We embrace new technologies and innovative approaches to create better living and working spaces.",
-    icon: Building2,
+    title: "Community Impact",
+    description: "Our work is designed to uplift communities and create lasting value.",
+    icon: Award,
   },
 ]
 
 const milestones = [
-  { year: "2009", event: "PrimeRealty founded with first residential project" },
-  { year: "2012", event: "Completed first major commercial development" },
-  { year: "2015", event: "Expanded to mixed-use developments" },
-  { year: "2018", event: "Achieved LEED certification for sustainable building" },
-  { year: "2020", event: "Launched affordable housing initiative" },
-  { year: "2022", event: "Reached 100 completed projects milestone" },
-  { year: "2025", event: "Opened new regional office and expanded team" },
+  { year: "2022", event: " Company incorporated in Odisha with the vision of redefining infrastructure consulting." },
+  { year: "2023", event: "Took up first major consulting assignments in residential and commercial projects." },
+  { year: "2024", event: "Expanded services to cover complete project management and execution support" },
+  { year: "2025", event: " Strengthened portfolio with new civil infrastructure projects and expanded regional presence." },
 ]
 
 export default function AboutPage() {
@@ -115,15 +112,15 @@ export default function AboutPage() {
             <div className="space-y-6">
               <h1 className="text-4xl lg:text-6xl font-bold text-foreground">Building Dreams, Creating Communities</h1>
               <p className="text-xl text-muted-foreground leading-relaxed">
-                For over 15 years, PrimeRealty has been at the forefront of innovative real estate development, creating
-                exceptional spaces that enhance communities and exceed expectations.
+                Lifespark Infra & Consulting Private Limited is a growing infrastructure and consulting company dedicated to delivering excellence in real estate development, civil construction, and project consulting. Since its incorporation in 2022, the company has been driven by a vision to create high-quality spaces that inspire trust, enhance communities, and stand the test of time.
+
               </p>
             </div>
             <div className="relative">
               <img
-                src="/placeholder.svg?height=400&width=600&text=Company+Building"
+                src="/about_placeholder.png"
                 alt="PrimeRealty headquarters"
-                className="rounded-2xl shadow-2xl w-full"
+                className="rounded-2xl shadow-2xl w-[480] h-[270] object-cover"
               />
             </div>
           </div>
@@ -141,19 +138,16 @@ export default function AboutPage() {
               <h2 className="text-3xl lg:text-4xl font-bold text-foreground">From Vision to Reality</h2>
               <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <p>
-                  Founded in 2009 by Sarah Johnson, PrimeRealty began with a simple yet powerful vision: to create
-                  developments that don't just provide shelter or workspace, but truly enhance the communities they
-                  serve.
+                  Founded in 2022, Lifespark Infra & Consulting was built on the idea of going beyond construction — to design and deliver sustainable developments that truly improve lives.
+
                 </p>
                 <p>
-                  What started as a small team with big dreams has grown into a leading real estate development company,
-                  known for our commitment to quality, sustainability, and community impact. We've successfully
-                  completed over 150 projects, ranging from luxury residential complexes to innovative commercial
-                  spaces.
+                  From residential housing and commercial projects to infrastructure consulting, our team combines technical expertise with a commitment to quality and transparency. With a strong foundation of professional values, we strive to bring modern engineering, sustainable practices, and client-focused solutions to every project.
+
                 </p>
                 <p>
-                  Today, we continue to push boundaries in design, sustainability, and community development, always
-                  staying true to our core mission of building exceptional spaces that stand the test of time.
+                  We are not just building structures — we are building trust, value, and long-lasting communities.
+
                 </p>
               </div>
             </div>
