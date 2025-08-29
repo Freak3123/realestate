@@ -4,10 +4,12 @@ import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import "./globals.css"
 import { Providers } from "@/lib/AuthProvider";
+import  Footer  from "@/components/Footer";
+import Navbar from "@/components/Navbar"
 
 export const metadata: Metadata = {
-  title: "my App",
-  description: "Created by me",
+  title: "LifeSpark",
+  description: "real estates",
 }
 
 export default function RootLayout({
@@ -27,9 +29,11 @@ html {
         `}</style>
       </head>
       <body>
+        <Navbar/>
         <Providers>
         {children}
         </Providers>
+        <Footer/>
       </body>
     </html>
   )

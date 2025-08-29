@@ -100,32 +100,7 @@ const milestones = [
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background">
-      {/* Navigation */}
-      <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-2">
-              <Building2 className="h-8 w-8 text-primary" />
-              <span className="font-bold text-xl text-foreground">PrimeRealty</span>
-            </div>
-            <div className="hidden md:flex items-center gap-8">
-              <Link href="/" className="text-muted-foreground hover:text-primary transition-colors">
-                Home
-              </Link>
-              <Link href="/projects" className="text-muted-foreground hover:text-primary transition-colors">
-                Projects
-              </Link>
-              <Link href="/about" className="text-foreground hover:text-primary transition-colors">
-                About
-              </Link>
-              <Button variant="outline" size="sm">
-                <Phone className="h-4 w-4 mr-2" />
-                Contact
-              </Button>
-            </div>
-          </div>
-        </div>
-      </nav>
+
 
       {/* Header */}
       <section className="py-16 bg-gradient-to-br from-background to-muted/20">
@@ -327,64 +302,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-background border-t py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <Building2 className="h-6 w-6 text-primary" />
-                <span className="font-bold text-lg">PrimeRealty</span>
-              </div>
-              <p className="text-muted-foreground">
-                Building exceptional spaces that enhance communities and exceed expectations.
-              </p>
-            </div>
-            <div className="space-y-4">
-              <h3 className="font-semibold">Quick Links</h3>
-              <div className="space-y-2">
-                <Link href="/" className="block text-muted-foreground hover:text-primary transition-colors">
-                  Home
-                </Link>
-                <Link href="/projects" className="block text-muted-foreground hover:text-primary transition-colors">
-                  Projects
-                </Link>
-                <Link href="/about" className="block text-muted-foreground hover:text-primary transition-colors">
-                  About
-                </Link>
-              </div>
-            </div>
-            <div className="space-y-4">
-              <h3 className="font-semibold">Services</h3>
-              <div className="space-y-2">
-                <p className="text-muted-foreground">Residential Development</p>
-                <p className="text-muted-foreground">Commercial Projects</p>
-                <p className="text-muted-foreground">Mixed-Use Development</p>
-              </div>
-            </div>
-            <div className="space-y-4">
-              <h3 className="font-semibold">Contact</h3>
-              <div className="space-y-2">
-                <p className="text-muted-foreground flex items-center gap-2">
-                  <Phone className="h-4 w-4" />
-                  +1 (555) 123-4567
-                </p>
-                <p className="text-muted-foreground flex items-center gap-2">
-                  <Mail className="h-4 w-4" />
-                  info@primerealty.com
-                </p>
-                <p className="text-muted-foreground flex items-center gap-2">
-                  <MapPin className="h-4 w-4" />
-                  123 Business District, City
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="border-t mt-8 pt-8 text-center text-muted-foreground">
-            <p>&copy; 2025 PrimeRealty. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }
