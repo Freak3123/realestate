@@ -2,11 +2,6 @@ const mongoose = require("mongoose");
 
 const ProjectSchema = new mongoose.Schema(
   {
-    id: {
-      type: Number,
-      required: true,
-      unique: true,
-    },
     title: {
       type: String,
       required: true,
@@ -30,11 +25,6 @@ const ProjectSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    shortdesc: {
-      type: String,
-      required: true,
-      trim: true,
-    },
     description: {
       type: String,
       required: true,
@@ -52,7 +42,7 @@ const ProjectSchema = new mongoose.Schema(
       default: 0,
     },
     bhk: {
-      type: Number,
+      type: String,
       default: null, // null means not applicable
     },
     amenities: {
@@ -82,4 +72,4 @@ const ProjectSchema = new mongoose.Schema(
 const Project =
   mongoose.models.Project || mongoose.model("Project", ProjectSchema);
 
-module.exports = Project;
+export default Project;
