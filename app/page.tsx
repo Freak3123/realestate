@@ -144,7 +144,7 @@ export default function HomePage() {
               </div>
             </div>
             <div className="relative">
-              <img
+              <Image
                 src="/modern-real-estate-rendering.png"
                 alt="Modern real estate development"
                 className="rounded-2xl shadow-2xl w-full"
@@ -230,9 +230,11 @@ export default function HomePage() {
                 className="overflow-hidden hover:shadow-lg transition-shadow"
               >
                 <div className="relative">
-                  <img
+                  <Image
                     src={project.image || "/placeholder.svg"}
                     alt={project.title}
+                    width={1000}
+                    height={1000}
                     className="w-full h-64 object-cover"
                   />
                   <Badge
@@ -270,7 +272,7 @@ export default function HomePage() {
           </div>
 
           <div className="text-center mt-12 text-foreground">
-            <Button size="lg" variant="secondary">
+            <Button size="lg" variant="outline" className="bg-primary text-primary-foreground hover:text-primary-foreground hover:bg-primary-foreground/25">
               View All Projects
             </Button>
           </div>

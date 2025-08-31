@@ -5,6 +5,7 @@ import { useReducedMotion, motion } from "framer-motion"
 import useEmblaCarousel from "embla-carousel-react"
 import Autoplay from "embla-carousel-autoplay"
 import Link from "next/link"
+import Image from "next/image";
 
 const slides = [
   { src: "/modern-real-estate-rendering.png", alt: "Modern residential development render" },
@@ -26,11 +27,12 @@ export function HeroCarousel() {
         <div className="flex h-full">
           {slides.map((s, i) => (
             <div key={i} className="relative min-w-0 flex-[0_0_100%]">
-              <img
+              <Image
                 src={s.src || "/placeholder.svg"}
                 alt={s.alt}
+                width={1000}
+                height={1000}
                 className="absolute inset-0 h-full w-full object-cover"
-                crossOrigin="anonymous"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/50 to-black/10" />
             </div>
