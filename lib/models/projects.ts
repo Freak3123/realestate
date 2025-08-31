@@ -23,19 +23,24 @@ const ProjectSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Planned", "Ongoing", "Completed", "On Hold"],
-      default: "Planned",
+      enum: [ "Ongoing", "Completed"],
+      default: "Ongoing",
     },
     image: {
       type: String,
       default: "",
+    },
+    shortdesc: {
+      type: String,
+      required: true,
+      trim: true,
     },
     description: {
       type: String,
       required: true,
     },
     completion: {
-      type: String, 
+      type: String, // e.g., "Q2 2025" or "Completed 2025"
       required: true,
     },
     units: {
@@ -45,6 +50,10 @@ const ProjectSchema = new mongoose.Schema(
     floors: {
       type: Number,
       default: 0,
+    },
+    bhk: {
+      type: Number,
+      default: null, // null means not applicable
     },
     amenities: {
       type: [String],
@@ -59,6 +68,10 @@ const ProjectSchema = new mongoose.Schema(
       min: 0,
       max: 100,
       default: 0,
+    },
+    images: {
+      type: [String],
+      default: [],
     },
   },
   {

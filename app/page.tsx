@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -21,6 +22,9 @@ import Image from "next/image";
 import { AnimatedSection } from "@/components/animated-section";
 import { AnimatedCounter } from "@/components/animated-counter";
 import { HeroCarousel } from "@/components/hero-carousel";
+import { MaskContainer } from "@/components/ui/svg-mask-effect";
+import { LampContainer } from "@/components/ui/lamp";
+import { motion } from "framer-motion";
 
 // Sample project data
 const featuredProjects = [
@@ -71,13 +75,13 @@ const values = [
     title: "Integrity & Transparency",
     description:
       "We believe trust is the foundation of long-term partnerships.",
-    icon: Building2, 
+    icon: Building2,
   },
   {
     title: "Quality First",
     description:
       "Every project is delivered with precision, safety, and durability.",
-    icon: TrendingUp, 
+    icon: TrendingUp,
   },
   {
     title: "Innovation & Sustainability",
@@ -86,10 +90,11 @@ const values = [
   },
   {
     title: "Community Impact",
-    description: "Our work is designed to uplift communities and create lasting value.",
+    description:
+      "Our work is designed to uplift communities and create lasting value.",
     icon: Award,
   },
-]
+];
 
 // const services = [
 //   {
@@ -113,6 +118,8 @@ const values = [
 // ];
 
 export default function HomePage() {
+  console.log("motion:", motion);
+  console.log("LampContainer:", LampContainer);
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -172,37 +179,37 @@ export default function HomePage() {
 
       {/* About us */}
       <AnimatedSection className="py-14 bg-muted/30">
-        <div className="md:flex justify-between items-center gap-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="md:flex justify-center items-center px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-6">
-            <h2 className="text-3xl lg:text-5xl font-bold">
-              Our Journey of Transformation
-            </h2>
-            <p className="text-xl text-muted-foreground mx-auto">
-              Our journey began in 2022, when we incorporated the company in
-              Odisha with a vision to redefine infrastructure consulting. By
-              2023, we had taken on our first major consulting assignments
-              across residential and commercial projects, marking an important
-              milestone in our growth. In 2024, we expanded our services to
-              offer complete project management and execution support,
-              strengthening our role as a trusted partner in the real estate
-              sector. The year 2025 saw us diversifying into civil
-              infrastructure projects and extending our regional presence,
-              further solidifying our commitment to building lasting value for
-              our clients and communities.
-            </p>
+            <LampContainer className="w-[90vw]">
+              <motion.h1
+                initial={{ opacity: 0.5, y: 100 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{
+                  delay: 0.3,
+                  duration: 0.8,
+                  ease: "easeInOut",
+                }}
+              >
+                <MaskContainer
+                  revealText={
+                    <p className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl">
+                      Our Journey of Transformation
+                    </p>
+                  }
+                  className="text-xl text-center text-muted-foreground mx-auto h-150 w-full"
+                >
+                  <p className="text-3xl text-white mx-auto">
+                    From our 2022 beginnings in Odisha to delivering full-scale project management by 2024, we’ve grown into a trusted force shaping real estate with vision and impact.
+                  </p>
+                </MaskContainer>
+              </motion.h1>
+            </LampContainer>
+
             <Button size="lg" variant="default" className="text-lg px-8 w-fit">
               <Mail className="h-5 w-5 mr-2" />
               Get In Touch
             </Button>
-          </div>
-          <div className="w-[250vw] h-full my-10">
-            <Image
-              src={"Construction.svg"}
-              alt="construction image"
-              height={1500}
-              width={1000}
-              className="lg:h-full md:block hidden"
-            />
           </div>
         </div>
       </AnimatedSection>
@@ -272,7 +279,11 @@ export default function HomePage() {
           </div>
 
           <div className="text-center mt-12 text-foreground">
-            <Button size="lg" variant="outline" className="bg-primary text-primary-foreground hover:text-primary-foreground hover:bg-primary-foreground/25">
+            <Button
+              size="lg"
+              variant="outline"
+              className="bg-primary text-primary-foreground hover:text-primary-foreground hover:bg-primary-foreground/25"
+            >
               View All Projects
             </Button>
           </div>

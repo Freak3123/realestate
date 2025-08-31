@@ -57,13 +57,7 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-md space-y-8">
         {/* Header */}
         <div className="text-center space-y-4">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
-          >
-            <Building2 className="h-8 w-8" />
-            <span className="font-bold text-2xl">PrimeRealty</span>
-          </Link>
+          
           <div className="space-y-2">
             <h1 className="text-3xl font-bold text-foreground">Admin Login</h1>
             <p className="text-muted-foreground">Access the admin dashboard</p>
