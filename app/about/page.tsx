@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { AnimatedSection } from "@/components/animated-section";
 
 // Team data
 const teamMembers = [
@@ -39,42 +40,6 @@ const teamMembers = [
     position: "Chief Architect",
     image: "/placeholder.svg?height=300&width=300&text=Michael+Chen",
     bio: "Award-winning architect specializing in sustainable design and innovative urban planning solutions.",
-    linkedin: "#",
-    twitter: "#",
-  },
-  {
-    id: 3,
-    name: "Emily Rodriguez",
-    position: "Project Director",
-    image: "/placeholder.svg?height=300&width=300&text=Emily+Rodriguez",
-    bio: "Expert in project management with a track record of delivering complex developments on time and within budget.",
-    linkedin: "#",
-    twitter: "#",
-  },
-  {
-    id: 4,
-    name: "David Thompson",
-    position: "Head of Sales",
-    image: "/placeholder.svg?height=300&width=300&text=David+Thompson",
-    bio: "Seasoned real estate professional with deep market knowledge and commitment to client satisfaction.",
-    linkedin: "#",
-    twitter: "#",
-  },
-  {
-    id: 5,
-    name: "Lisa Park",
-    position: "Sustainability Officer",
-    image: "/placeholder.svg?height=300&width=300&text=Lisa+Park",
-    bio: "Environmental engineer focused on implementing green building practices and sustainable development strategies.",
-    linkedin: "#",
-    twitter: "#",
-  },
-  {
-    id: 6,
-    name: "James Wilson",
-    position: "Finance Director",
-    image: "/placeholder.svg?height=300&width=300&text=James+Wilson",
-    bio: "Financial expert with extensive experience in real estate investment and development financing.",
     linkedin: "#",
     twitter: "#",
   },
@@ -133,7 +98,7 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="py-16 bg-gradient-to-br from-background to-muted/20">
+      <AnimatedSection className="py-16 bg-gradient-to-br from-background to-muted/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4 mb-8">
             <Link
@@ -169,10 +134,10 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-      </section>
+      </AnimatedSection>
 
       {/* Company Story */}
-      <section className="py-20 bg-background">
+      <AnimatedSection className="py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-6">
@@ -223,10 +188,10 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-      </section>
+      </AnimatedSection>
 
       {/* Values */}
-      <section className="py-20 bg-muted/30">
+      <AnimatedSection className="py-20 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-16">
             <Badge variant="secondary" className="w-fit mx-auto">
@@ -258,10 +223,10 @@ export default function AboutPage() {
             ))}
           </div>
         </div>
-      </section>
+      </AnimatedSection>
 
       {/* Team */}
-      <section className="py-20 bg-background">
+      <AnimatedSection className="py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-16">
             <Badge variant="secondary" className="w-fit mx-auto">
@@ -317,10 +282,10 @@ export default function AboutPage() {
             ))}
           </div>
         </div>
-      </section>
+      </AnimatedSection>
 
       {/* Stats */}
-      <section className="py-16 bg-primary text-primary-foreground">
+      <AnimatedSection className="py-16 bg-primary text-primary-foreground">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center space-y-2">
@@ -347,10 +312,10 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-      </section>
+      </AnimatedSection>
 
       {/* CTA */}
-      <section className="py-20 bg-background">
+      <AnimatedSection className="py-20 bg-background">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
           <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
             Ready to Work With Us?
@@ -374,7 +339,7 @@ export default function AboutPage() {
             </Button>
           </div>
         </div>
-      </section>
+      </AnimatedSection>
     </div>
   );
 }
