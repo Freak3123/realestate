@@ -55,32 +55,6 @@ const teamMembers = [
   },
 ];
 
-const values = [
-  {
-    title: "Integrity & Transparency",
-    description:
-      "We believe trust is the foundation of long-term partnerships.",
-    icon: Building2,
-  },
-  {
-    title: "Quality First",
-    description:
-      "Every project is delivered with precision, safety, and durability.",
-    icon: TrendingUp,
-  },
-  {
-    title: "Innovation & Sustainability",
-    description: "We embrace modern technologies and eco-friendly practices.",
-    icon: Users,
-  },
-  {
-    title: "Community Impact",
-    description:
-      "Our work is designed to uplift communities and create lasting value.",
-    icon: Award,
-  },
-];
-
 const services = [
   { title: "Site Visits", description: "Organizing and accompanying clients for property site inspections.", icon: FiMapPin },
   { title: "Logistic Help", description: "Providing support with transportation and site coordination.", icon: FiTruck },
@@ -231,7 +205,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-3 gap-8">
             {services.map((value, index) => (
               <HoverCard
                 key={index}
