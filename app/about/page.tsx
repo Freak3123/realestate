@@ -211,7 +211,6 @@ export default function AboutPage() {
                 key={index}
                 title={value.title}
                 subtitle={value.description}
-                href="#"
                 Icon={value.icon}
               />
             ))}

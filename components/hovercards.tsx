@@ -5,13 +5,11 @@ interface CardType {
   title: string;
   subtitle: string;
   Icon: IconType;
-  href: string;
 }
 
-const Card = ({ title, subtitle, Icon, href }: CardType) => {
+const Card = ({ title, subtitle, Icon }: CardType) => {
   return (
     <a
-      href={href}
       className="flex flex-col group h-64 justify-center items-center w-full text-center p-6 
       rounded-md relative overflow-hidden 
                  bg-card text-card-foreground border-border"
