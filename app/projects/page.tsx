@@ -62,6 +62,7 @@ const projects = [
       "/about_placeholder.png",
       "/about_placeholder.png",
       "/about_placeholder.png",
+      "/about_placeholder.png",
     ],
   },
 ];
@@ -242,12 +243,14 @@ export default function ProjectsPage() {
                             setLightboxIndex(idx)
                             setLightboxOpen(true)
                           }}
-                          className="relative group h-28 w-full overflow-hidden rounded"
+                          className="relative group h-28 lg:h-[16rem] w-full overflow-hidden rounded"
                           aria-label={`Open image ${idx + 1} of ${total}`}
                         >
-                          <img
+                          <Image
                             src={src || "/placeholder.svg"}
                             alt={`${selectedProject.title} image ${idx + 1}`}
+                            width={1000}
+                            height={1000}
                             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                           />
                           {showOverlay && (
