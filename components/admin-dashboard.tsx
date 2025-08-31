@@ -657,7 +657,7 @@ function ProjectFormDialog({
     e.preventDefault();
     
     try{
-      const res = await axios.post('/api/save-proj', formData);
+      const res = await axios.post('/api/admin/save-proj', formData);
       if(res.status === 200){
         onClose();
         // onSave({ ...formData, id: project ? project.id : "" });
@@ -764,7 +764,7 @@ function ProjectFormDialog({
               <Label htmlFor="units">BHK</Label>
               <Input
                 id="units"
-                type="number"
+                type="text"
                 value={formData.bhk}
                 onChange={(e) =>
                   setFormData({
