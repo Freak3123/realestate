@@ -144,10 +144,9 @@ export default function ProjectsPage() {
         </div>
       </AnimatedSection>
 
-      {/* Enquiry & Details Dialog */}
       {/* Enquiry Dialog */}
       <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
-        <DialogContent className="min-w-[80vw] max-h-[80vh] min-h-[60vh]">
+        <DialogContent className="min-w-[80vw] my-20 min-h-[60vh]">
           <DialogHeader>
             <DialogTitle>Enquire About {selectedProject?.title}</DialogTitle>
             <DialogDescription>
@@ -156,9 +155,9 @@ export default function ProjectsPage() {
           </DialogHeader>
 
           {selectedProject && (
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-2 gap-6 lg:flex lg:gap-12">
               {/* Left: Enquiry Form */}
-              <form onSubmit={handleEnquirySubmit} className="space-y-4 order-2 md:order-1">
+              <form onSubmit={handleEnquirySubmit} className="space-y-4 order-2 md:order-1 border p-6 rounded-md shadow-xl">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Full Name</label>
