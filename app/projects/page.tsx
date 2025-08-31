@@ -31,10 +31,12 @@ import {
   Home,
   Bath,
   Car,
+  Scroll,
 } from "lucide-react";
 import Link from "next/link";
 import { AnimatedSection } from "@/components/animated-section";
 import Image from "next/image";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const projects = [
   {
@@ -146,7 +148,8 @@ export default function ProjectsPage() {
 
       {/* Enquiry Dialog */}
       <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
-        <DialogContent className="min-w-[80vw] my-20 min-h-[60vh]">
+        <DialogContent className="min-w-[80vw] my-20 min-h-[60vh] ">
+          <ScrollArea className="h-[70vh] pr-4">
           <DialogHeader>
             <DialogTitle>Enquire About {selectedProject?.title}</DialogTitle>
             <DialogDescription>
@@ -272,6 +275,8 @@ export default function ProjectsPage() {
               </div>
             </div>
           )}
+
+          </ScrollArea>
         </DialogContent>
       </Dialog>
 
