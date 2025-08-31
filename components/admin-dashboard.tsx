@@ -194,7 +194,7 @@ export function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background ">
       {/* Fixed Alert */}
       {alert && (
         <div className="fixed top-4 right-4 z-50">
@@ -213,11 +213,11 @@ export function AdminDashboard() {
       )}
 
       {/* Header */}
-      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40">
+      <header className="border-b  bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40">
         <div className="flex h-16 items-center justify-between px-6">
           <div className="flex items-center gap-6">
             
-            <nav className="hidden md:flex items-center gap-6">
+            <nav className="hidden md:flex items-center gap-6 ">
               <Button
                 variant={activeTab === "overview" ? "default" : "ghost"}
                 size="sm"
@@ -260,7 +260,7 @@ export function AdminDashboard() {
         </div>
       </header>
 
-      <div className="p-6">
+      <div className="p-6 ">
         {/* Overview Tab */}
         {activeTab === "overview" && (
           <div className="space-y-6">

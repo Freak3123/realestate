@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -22,6 +24,14 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { AnimatedSection } from "@/components/animated-section";
+import Lottie from "lottie-react";
+import animationData from "@/public/lottie/City.json";
+import HoverCard from "@/components/hovercards";
+import { 
+  FiMapPin, FiTruck, FiFileText, FiFile, 
+  FiCreditCard, FiTrendingUp, FiUsers, 
+  FiRepeat, FiTool, FiHome, FiActivity, FiEdit 
+} from "react-icons/fi";
 
 // Team data
 const teamMembers = [
@@ -45,30 +55,19 @@ const teamMembers = [
   },
 ];
 
-const values = [
-  {
-    title: "Integrity & Transparency",
-    description:
-      "We believe trust is the foundation of long-term partnerships.",
-    icon: Building2,
-  },
-  {
-    title: "Quality First",
-    description:
-      "Every project is delivered with precision, safety, and durability.",
-    icon: TrendingUp,
-  },
-  {
-    title: "Innovation & Sustainability",
-    description: "We embrace modern technologies and eco-friendly practices.",
-    icon: Users,
-  },
-  {
-    title: "Community Impact",
-    description:
-      "Our work is designed to uplift communities and create lasting value.",
-    icon: Award,
-  },
+const services = [
+  { title: "Site Visits", description: "Organizing and accompanying clients for property site inspections.", icon: FiMapPin },
+  { title: "Logistic Help", description: "Providing support with transportation and site coordination.", icon: FiTruck },
+  { title: "Negotiation", description: "Assisting in securing the best deals for buyers and sellers.", icon: FiActivity }, // replaced FiHandshake
+  { title: "Legal Verification Assistance", description: "Helping clients verify property documents for legal compliance.", icon: FiFileText },
+  { title: "Documentation", description: "Ensuring seamless and error-free paperwork.", icon: FiFile },
+  { title: "Home Loan Assistance", description: "Guiding clients through the home loan process.", icon: FiCreditCard },
+  { title: "Sale Deed Execution", description: "Facilitating the smooth execution of sale deeds.", icon: FiEdit }, // replaced FiFileCheck
+  { title: "Sale, Purchase & Investment Advisory", description: "Offering expert guidance for property transactions and investments.", icon: FiTrendingUp },
+  { title: "Developer Consultation & Project Advisory", description: "Providing end-to-end support to developers in conceptualizing and executing real estate projects.", icon: FiUsers },
+  { title: "Resale Assistance", description: "Providing support in reselling properties at the best value.", icon: FiRepeat },
+  { title: "Renovation Assistance", description: "Assisting with property renovation needs.", icon: FiTool },
+  { title: "Property Management", description: "Offering end-to-end management services for property owners.", icon: FiHome }
 ];
 
 const milestones = [
@@ -97,16 +96,20 @@ const milestones = [
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background">
+      <div className="w-full h-[20rem]">
+        <Image
+          src="/about_placeholder.png"
+          alt="PrimeRealty headquarters"
+          width={1000}
+          height={1000}
+          className="object-cover w-full h-[20rem] "
+        />
+      </div>
+
       {/* Header */}
       <AnimatedSection className="py-16 bg-gradient-to-br from-background to-muted/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4 mb-8">
-            <Link
-              href="/"
-              className="text-muted-foreground hover:text-primary transition-colors"
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </Link>
             <Badge variant="secondary">About Us</Badge>
           </div>
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -124,13 +127,9 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="relative">
-              <Image
-                src="/about_placeholder.png"
-                alt="PrimeRealty headquarters"
-                width={1000}
-                height={1000}
-                className="rounded-2xl shadow-2xl w-[480] h-[270] object-cover"
-              />
+              <div className="w-[480px] h-[270px] overflow-hidden">
+                <Lottie animationData={animationData} loop={true} />
+              </div>
             </div>
           </div>
         </div>
@@ -191,35 +190,29 @@ export default function AboutPage() {
       </AnimatedSection>
 
       {/* Values */}
-      <AnimatedSection className="py-20 bg-muted/30">
+      <AnimatedSection className="py-20 bg-primary">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-16">
             <Badge variant="secondary" className="w-fit mx-auto">
               Our Values
             </Badge>
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
+            <h2 className="text-3xl lg:text-4xl font-bold text-primary-foreground">
               What Drives Us
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-xl text-primary-foreground/90 max-w-3xl mx-auto">
               Our core values guide every decision we make and every project we
               undertake.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, index) => (
-              <Card
+          <div className="grid md:grid-cols-3 gap-8">
+            {services.map((value, index) => (
+              <HoverCard
                 key={index}
-                className="text-center p-6 hover:shadow-lg transition-shadow"
-              >
-                <CardHeader>
-                  <value.icon className="h-12 w-12 text-primary mx-auto mb-4" />
-                  <CardTitle className="text-xl">{value.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">{value.description}</p>
-                </CardContent>
-              </Card>
+                title={value.title}
+                subtitle={value.description}
+                Icon={value.icon}
+              />
             ))}
           </div>
         </div>
