@@ -160,7 +160,7 @@ export default function HomePage() {
               Get In Touch
             </Button>
           </div>
-          <div className="w-[250vw] h-full my-10">
+          <div className="md:w-[250vw] h-full my-10 w-[8 rem]">
             <Lottie animationData={animationData} loop={true} />
           </div>
         </div>
