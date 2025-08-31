@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -37,6 +37,7 @@ import Link from "next/link";
 import { AnimatedSection } from "@/components/animated-section";
 import Image from "next/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { ImageLightbox } from "@/components/image-lightbox"
 
 const projects = [
   {
@@ -52,7 +53,6 @@ const projects = [
     description:
       "Experience premium 3BHK residences thoughtfully designed to blend modern architecture with refined luxury. Each limited apartment offers spacious interiors, high-quality finishes, and access to exclusive amenities that redefine comfort and elegance. Nestled in a prime location, these homes provide the perfect balance of convenience, style, and a vibrant community atmosphere.",
     completion: "Q2 2025",
-    units: 200,
     floors: 25,
     bhk: 3,
     amenities: ["Lift", "Lobby", "24/7 Security"],
@@ -76,7 +76,13 @@ export default function ProjectsPage() {
     phone: "",
     message: "",
   });
-  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
+
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [lightboxIndex, setLightboxIndex] = useState(0)
+
+  useEffect(() => {
+    if (!selectedProject) setLightboxOpen(false)
+  }, [selectedProject])
 
   const ongoingProjects = projects.filter((p) => p.status === "Ongoing");
   const completedProjects = projects.filter((p) => p.status === "Completed");
@@ -148,8 +154,8 @@ export default function ProjectsPage() {
 
       {/* Enquiry Dialog */}
       <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
-        <DialogContent className="min-w-[80vw] my-20 min-h-[60vh] ">
-          <ScrollArea className="h-[70vh] pr-4">
+        <DialogContent className="min-w-[80vw] min-h-[60vh] lg:min-w-[60vw]">
+          <ScrollArea className="h-[70vh] pr-4 md:h-full">
           <DialogHeader>
             <DialogTitle>Enquire About {selectedProject?.title}</DialogTitle>
             <DialogDescription>
@@ -158,9 +164,9 @@ export default function ProjectsPage() {
           </DialogHeader>
 
           {selectedProject && (
-            <div className="grid md:grid-cols-2 gap-6 lg:flex lg:gap-12">
+            <div className="grid gap-6 md:flex lg:gap-12 my-10 md:my-6">
               {/* Left: Enquiry Form */}
-              <form onSubmit={handleEnquirySubmit} className="space-y-4 order-2 md:order-1 border p-6 rounded-md shadow-xl">
+              <form onSubmit={handleEnquirySubmit} className="space-y-4 mt-6 order-2 md:order-1 border p-6 rounded-md shadow-xl ">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Full Name</label>
@@ -224,14 +230,34 @@ export default function ProjectsPage() {
 
                   {/* Image gallery */}
                   <div className="grid grid-cols-3 gap-2">
-                    {selectedProject.images?.map((src, idx) => (
-                      <img
-                        key={idx}
-                        src={src || "/placeholder.svg"}
-                        alt={`${selectedProject.title} image ${idx + 1}`}
-                        className="h-28 w-full rounded object-cover"
-                      />
-                    ))}
+                    {selectedProject.images?.slice(0, 3).map((src, idx) => {
+                      const total = selectedProject.images?.length ?? 0
+                      const showOverlay = idx === 2 && total > 3
+                      const remaining = Math.max(0, total - 3)
+                      return (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => {
+                            setLightboxIndex(idx)
+                            setLightboxOpen(true)
+                          }}
+                          className="relative group h-28 w-full overflow-hidden rounded"
+                          aria-label={`Open image ${idx + 1} of ${total}`}
+                        >
+                          <img
+                            src={src || "/placeholder.svg"}
+                            alt={`${selectedProject.title} image ${idx + 1}`}
+                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          />
+                          {showOverlay && (
+                            <div className="absolute inset-0 bg-black/60 text-white grid place-items-center text-sm font-medium">
+                              +{remaining}
+                            </div>
+                          )}
+                        </button>
+                      )
+                    })}
                   </div>
 
                   {/* Description and quick facts */}
@@ -241,10 +267,6 @@ export default function ProjectsPage() {
                     <div className="flex items-center gap-2">
                       <Home className="h-4 w-4 text-muted-foreground" />
                       <span>{selectedProject.bhk} BHK</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Bath className="h-4 w-4 text-muted-foreground" />
-                      <span>{selectedProject.units} Units</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Car className="h-4 w-4 text-muted-foreground" />
@@ -281,24 +303,14 @@ export default function ProjectsPage() {
       </Dialog>
 
       {/* Image Lightbox */}
-      <Dialog
-        open={!!lightboxImage}
-        onOpenChange={() => setLightboxImage(null)}
-      >
-        <DialogContent className="bg-black/90 flex justify-center items-center p-0 max-w-full max-h-full">
-          <DialogTitle>
-            {lightboxImage && (
-              <Image
-                src={lightboxImage}
-                width={1000}
-                height={1000}
-                alt="Project image"
-                className="max-w-full max-h-[90vh] object-contain rounded"
-              />
-            )}
-          </DialogTitle>
-        </DialogContent>
-      </Dialog>
+      {selectedProject && (
+        <ImageLightbox
+          images={selectedProject.images || []}
+          initialIndex={lightboxIndex}
+          open={lightboxOpen}
+          onOpenChange={setLightboxOpen}
+        />
+      )}
     </div>
   );
 }
@@ -362,91 +374,4 @@ function ProjectCard({ project, onEnquiry }: any) {
   );
 }
 
-function EnquiryForm({
-  project,
-  formData,
-  setFormData,
-  onSubmit,
-  onCancel,
-}: any) {
-  return (
-    <form onSubmit={onSubmit} className="space-y-4 md:w-1/2 order-2 md:order-1">
-      <DialogHeader>
-        <DialogTitle>Enquire About {project.title}</DialogTitle>
-        <DialogDescription>
-          We’ll get back to you with availability and pricing.
-        </DialogDescription>
-      </DialogHeader>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <InputField
-          label="Full Name"
-          value={formData.name}
-          onChange={(v: string) => setFormData({ ...formData, name: v })}
-        />
-        <InputField
-          label="Phone Number"
-          value={formData.phone}
-          onChange={(v: string) => setFormData({ ...formData, phone: v })}
-        />
-      </div>
-      <InputField
-        label="Email Address"
-        value={formData.email}
-        onChange={(v: string) => setFormData({ ...formData, email: v })}
-      />
-      <Textarea
-        value={formData.message}
-        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-        placeholder="Your message..."
-        rows={6}
-      />
-      <div className="flex gap-4 pt-2">
-        <Button type="submit" className="flex-1">
-          Send Enquiry
-        </Button>
-        <Button type="button" variant="outline" onClick={onCancel}>
-          Cancel
-        </Button>
-      </div>
-    </form>
-  );
-}
 
-function InputField({ label, value, onChange }: any) {
-  return (
-    <div className="space-y-2">
-      <label className="text-sm font-medium">{label}</label>
-      <Input
-        required
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={label}
-      />
-    </div>
-  );
-}
-
-function ProjectDetails({ project, onImageClick }: any) {
-  return (
-    <div className="md:w-1/2 order-1 md:order-2 space-y-4">
-      <h3 className="text-xl font-semibold">{project.title}</h3>
-      <p className="text-sm text-muted-foreground flex items-center gap-1">
-        <MapPin className="h-4 w-4" /> {project.location}
-      </p>
-      <div className="grid grid-cols-3 gap-2">
-        {project.images.map((src: string, idx: number) => (
-          <Image
-            key={idx}
-            src={src}
-            alt={`${project.title} ${idx + 1}`}
-            width={1000}
-            height={1000}
-            className="h-28 w-full rounded object-cover cursor-pointer"
-            onClick={() => onImageClick(src)}
-          />
-        ))}
-      </div>
-      <p className="text-sm text-muted-foreground">{project.description}</p>
-    </div>
-  );
-}
