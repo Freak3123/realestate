@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,7 +21,8 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { AnimatedSection } from "@/components/animated-section";
-import { AnimatedCounter } from "@/components/animated-counter";
+import Lottie from "lottie-react";
+import animationData from "@/public/lottie/Construction.json";
 import { HeroCarousel } from "@/components/hero-carousel";
 
 // Sample project data
@@ -115,44 +118,6 @@ const values = [
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      {/* <section className="relative py-20 lg:py-32 bg-gradient-to-br from-background to-muted/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <div className="space-y-4">
-                <Badge variant="secondary" className="w-fit">
-                  Building Tomorrow's Communities
-                </Badge>
-                <h1 className="text-4xl lg:text-6xl font-bold text-foreground leading-tight">
-                  Transforming Visions Into
-                  <span className="text-primary"> Reality</span>
-                </h1>
-                <p className="text-xl text-muted-foreground leading-relaxed">
-                  We create exceptional residential and commercial spaces that enhance communities and exceed
-                  expectations. From concept to completion, we deliver excellence.
-                </p>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="text-lg px-8">
-                  View Our Projects
-                </Button>
-                <Button variant="outline" size="lg" className="text-lg px-8 bg-transparent">
-                  <Phone className="h-5 w-5 mr-2" />
-                  Get Consultation
-                </Button>
-              </div>
-            </div>
-            <div className="relative">
-              <img
-                src="/modern-real-estate-rendering.png"
-                alt="Modern real estate development"
-                className="rounded-2xl shadow-2xl w-full"
-              />
-            </div>
-          </div>
-        </div>
-      </section> */}
       <HeroCarousel />
 
       {/* Stats Section */}
@@ -196,13 +161,7 @@ export default function HomePage() {
             </Button>
           </div>
           <div className="w-[250vw] h-full my-10">
-            <Image
-              src={"Construction.svg"}
-              alt="construction image"
-              height={1500}
-              width={1000}
-              className="lg:h-full md:block hidden"
-            />
+            <Lottie animationData={animationData} loop={true} />
           </div>
         </div>
       </AnimatedSection>
