@@ -38,6 +38,8 @@ import { AnimatedSection } from "@/components/animated-section";
 import Image from "next/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ImageLightbox } from "@/components/image-lightbox"
+import axios from "axios";
+import LoaderComp from "@/components/LoaderComp";
 
 const projects = [
   {
@@ -79,14 +81,38 @@ export default function ProjectsPage() {
   });
 
   const [lightboxOpen, setLightboxOpen] = useState(false)
-  const [lightboxIndex, setLightboxIndex] = useState(0)
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [projectDetails, setProjectDetails] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!selectedProject) setLightboxOpen(false)
-  }, [selectedProject])
 
-  const ongoingProjects = projects.filter((p) => p.status === "Ongoing");
-  const completedProjects = projects.filter((p) => p.status === "Completed");
+    async function getProjectDetails() {
+
+      try{
+        const res = await axios.get('/api/admin/save-proj');
+
+        console.log(res.data)
+        setProjectDetails(res.data.data);
+
+        setLoading(false);
+      
+      }catch(err){
+        console.log(err)
+        
+      }}
+    getProjectDetails();
+  }, [selectedProject])
+  if (loading) return (
+    <div className="min-h-screen w-full bg-background flex items-center justify-center">
+      <LoaderComp/>
+    </div>
+
+  )
+
+  const ongoingProjects = projectDetails.filter((p: any) => p.status === "Ongoing");
+  const completedProjects = projectDetails.filter((p: any) => p.status === "Completed");
 
   const handleEnquirySubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -135,7 +161,7 @@ export default function ProjectsPage() {
             </TabsList>
 
             <TabsContent value="all">
-              <ProjectGrid projects={projects} onEnquiry={setSelectedProject} />
+              <ProjectGrid projects={projectDetails} onEnquiry={setSelectedProject} />
             </TabsContent>
             <TabsContent value="ongoing">
               <ProjectGrid
@@ -269,7 +295,7 @@ export default function ProjectsPage() {
                   <div className="grid grid-cols-3 gap-3 text-sm">
                     <div className="flex items-center gap-2">
                       <Home className="h-4 w-4 text-muted-foreground" />
-                      <span>{selectedProject.bhk} BHK</span>
+                      <span>{selectedProject.bhk} </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Car className="h-4 w-4 text-muted-foreground" />
@@ -322,7 +348,7 @@ function ProjectGrid({ projects, onEnquiry }: any) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {projects.map((p: any) => (
-        <ProjectCard key={p.id} project={p} onEnquiry={onEnquiry} />
+        <ProjectCard key={p._id} project={p} onEnquiry={onEnquiry} />
       ))}
     </div>
   );
@@ -364,7 +390,7 @@ function ProjectCard({ project, onEnquiry }: any) {
           <CardDescription className="grid grid-cols-2 gap-[6rem] text-sm">
             <div className="flex items-center gap-2">
               <Home className="h-4 w-4 text-muted-foreground" />
-              <span>{project.units} units</span>
+              <span>{project.bhk}</span>
             </div>
             <div className="flex items-center gap-2">
               <Building2 className="h-4 w-4 text-muted-foreground" />

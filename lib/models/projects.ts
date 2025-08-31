@@ -29,6 +29,10 @@ const ProjectSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    shortdesc: {
+      type: String,
+      required: true,
+    },
     completion: {
       type: String, // e.g., "Q2 2025" or "Completed 2025"
       required: true,

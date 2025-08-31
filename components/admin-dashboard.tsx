@@ -45,9 +45,14 @@ import {
 import Link from "next/link";
 import axios from "axios";
 
+import { supabase } from "../lib/supabaseClient";
+import { set } from "mongoose";
+import LoaderComp from "./LoaderComp";
+import { useRouter } from "next/navigation";
+
 // Types
 interface Project {
-  id: string;
+  _id: string;
   title: string;
   location: string;
   type: "Residential" | "Commercial" | "Mixed-Use";
@@ -59,6 +64,8 @@ interface Project {
   price: string;
   progress: number;
   image?: string;
+  images?: string[];
+  amenities?: string[];
 }
 
 interface Enquiry {
@@ -74,36 +81,6 @@ interface Enquiry {
 }
 
 // Sample data
-const initialProjects: Project[] = [
-  {
-    id: "1",
-    title: "Skyline Residences",
-    location: "Downtown District",
-    type: "Residential",
-    status: "Ongoing",
-    description:
-      "Luxury residential complex with 200 units featuring modern amenities and panoramic city views.",
-    completion: "Q2 2025",
-    bhk: "200",
-    floors: 25,
-    price: "Starting from $450,000",
-    progress: 65,
-  },
-  {
-    id: "2",
-    title: "Green Valley Mall",
-    location: "Suburban Center",
-    type: "Commercial",
-    status: "Completed",
-    description:
-      "State-of-the-art shopping center with sustainable design and premium retail spaces.",
-    completion: "Completed 2025",
-    bhk: "150",
-    floors: 3,
-    price: "Retail spaces from $2,500/sqft",
-    progress: 100,
-  },
-];
 
 const initialEnquiries: Enquiry[] = [
   {
@@ -134,7 +111,7 @@ const initialEnquiries: Enquiry[] = [
 
 export function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
-  const [projects, setProjects] = useState<Project[]>(initialProjects);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [enquiries, setEnquiries] = useState<Enquiry[]>(initialEnquiries);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [isAddingProject, setIsAddingProject] = useState(false);
@@ -142,25 +119,39 @@ export function AdminDashboard() {
     type: "success" | "error";
     message: string;
   } | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Load data from localStorage on mount
   useEffect(() => {
-    const savedProjects = localStorage.getItem("admin_projects");
-    const savedEnquiries = localStorage.getItem("admin_enquiries");
 
-    if (savedProjects) {
-      setProjects(JSON.parse(savedProjects));
-    }
-    if (savedEnquiries) {
-      setEnquiries(JSON.parse(savedEnquiries));
-    }
+
+
+
+    //write a function to fetch projects from the endpoint /api/save-proj
+    const fetchProjects = async () => {
+      try {
+        const response = await axios.get("/api/admin/save-proj");
+        if (response.data.success) {
+          setProjects(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+      }
+    };
+    fetchProjects();
+
+    setIsLoading(false);
+        
   }, []);
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoaderComp />
+      </div>
+    );}
+
   // Save data to localStorage
-  const saveProjects = (newProjects: Project[]) => {
-    setProjects(newProjects);
-    localStorage.setItem("admin_projects", JSON.stringify(newProjects));
-  };
 
   const saveEnquiries = (newEnquiries: Enquiry[]) => {
     setEnquiries(newEnquiries);
@@ -172,10 +163,19 @@ export function AdminDashboard() {
     setTimeout(() => setAlert(null), 3000);
   };
 
-  const handleDeleteProject = (id: string) => {
-    const newProjects = projects.filter((p) => p.id !== id);
-    saveProjects(newProjects);
-    showAlert("success", "Project deleted successfully");
+  const handleDeleteProject = async (id: string) => {
+    try{
+      const res= await axios.delete(`/api/admin/save-proj?id=${id}`);
+      if (res.status===200){
+        const newProjects = projects.filter((p) => p._id !== id);
+        setProjects(newProjects);
+        showAlert("success", "Project deleted successfully");
+      }
+
+    }catch(err){
+      console.log(err)
+      showAlert("error", "Error deleting project");
+    }
   };
 
   const handleUpdateEnquiryStatus = (id: string, status: Enquiry["status"]) => {
@@ -216,10 +216,7 @@ export function AdminDashboard() {
       <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40">
         <div className="flex h-16 items-center justify-between px-6">
           <div className="flex items-center gap-6">
-            <Link href="/" className="flex items-center gap-2">
-              <Building2 className="h-6 w-6 text-primary" />
-              <span className="font-bold text-lg">PrimeRealty Admin</span>
-            </Link>
+            
             <nav className="hidden md:flex items-center gap-6">
               <Button
                 variant={activeTab === "overview" ? "default" : "ghost"}
@@ -340,7 +337,7 @@ export function AdminDashboard() {
                 <CardContent className="space-y-4">
                   {projects.slice(0, 3).map((project) => (
                     <div
-                      key={project.id}
+                      key={project._id}
                       className="flex items-center justify-between"
                     >
                       <div>
@@ -419,7 +416,7 @@ export function AdminDashboard() {
 
             <div className="grid gap-6">
               {projects.map((project) => (
-                <Card key={project.id}>
+                <Card key={project._id}>
                   <CardHeader>
                     <div className="flex justify-between items-start">
                       <div>
@@ -441,14 +438,7 @@ export function AdminDashboard() {
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => setEditingProject(project)}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleDeleteProject(project.id)}
+                          onClick={() => handleDeleteProject(project._id)}
                           className="text-destructive hover:text-destructive"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -588,13 +578,13 @@ export function AdminDashboard() {
         onSave={(project) => {
           if (editingProject) {
             const newProjects = projects.map((p) =>
-              p.id === project.id ? project : p
+              p._id === project._id ? project : p
             );
-            saveProjects(newProjects);
+            setProjects(newProjects);
             showAlert("success", "Project updated successfully");
           } else {
             const newProject = { ...project, id: Date.now().toString() };
-            saveProjects([...projects, newProject]);
+            setProjects([newProject, ...projects]);
             showAlert("success", "Project added successfully");
           }
           setEditingProject(null);
@@ -607,7 +597,7 @@ export function AdminDashboard() {
 
 // Project Form Dialog Component
 function ProjectFormDialog({
-  project,
+
   isOpen,
   onClose,
   onSave,
@@ -617,54 +607,70 @@ function ProjectFormDialog({
   onClose: () => void;
   onSave: (project: Project) => void;
 }) {
-  const [formData, setFormData] = useState<Omit<Project, "id">>({
+  const [formData, setFormData] = useState({
     title: "",
     location: "",
     type: "Residential",
+    image:"",
     status: "Ongoing",
     description: "",
+    shortdesc:"",
     completion: "",
     bhk: "",
     floors: 0,
     price: "",
     progress: 0,
+    amenities: [],
+    images: [],
   });
+  const [amenity, setAmenity] = useState("");
+  const [amenities, setAmenities] = useState<string[]>([]);
+  const [images, setImages] = useState<File[]>([]);
+  const [ isUploading, setUploading] = useState(false);
+  
+  const router = useRouter();
 
 
-
-  useEffect(() => {
-    if (project) {
-      setFormData(project);
-    } else {
-      setFormData({
-        title: "",
-        location: "",
-        type: "Residential",
-        status: "Ongoing",
-        description: "",
-        completion: "",
-        bhk: "",
-        floors: 0,
-        price: "",
-        progress: 0,
-      });
+  const handleAddAmenity = () => {
+    if (amenity.trim() && !amenities.includes(amenity)) {
+      setAmenities([...amenities, amenity.trim()]);
+      setAmenity("");
     }
-
-
-  }, [project]);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    try{
-      const res = await axios.post('/api/admin/save-proj', formData);
-      if(res.status === 200){
-        onClose();
-        // onSave({ ...formData, id: project ? project.id : "" });
+
+    try {
+      setUploading(true);
+      const form = new FormData();
+      images.forEach((file) => form.append("files", file));
+      form.append("title", formData.title);
+
+      const res = await fetch("/api/upload", { method: "POST", body: form });
+
+      if (!res.ok) throw new Error(`Upload failed: ${res.statusText}`);
+
+      const { urls } = await res.json();
+
+      const imageUrl=urls[0] || "";
+
+      const payload = { ...formData, amenities, images: urls, image:imageUrl };
+
+      console.log("Payload to save:", payload);
+
+      const saveRes = await axios.post("/api/admin/save-proj", payload);
+      
+
+      if (saveRes.status === 201 || saveRes.status === 200) {
+        window.location.reload();  
+        
       }
-    }
-    catch(err){
-      console.log(err);
+
+      setUploading(false);
+
+    } catch (err) {
+      console.error("Error saving project:", err);
     }
   };
 
@@ -673,12 +679,10 @@ function ProjectFormDialog({
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
-            {project ? "Edit Project" : "Add New Project"}
+            Add New Project
           </DialogTitle>
           <DialogDescription>
-            {project
-              ? "Update project information"
-              : "Create a new real estate project"}
+            Create a new real estate project
           </DialogDescription>
         </DialogHeader>
 
@@ -758,6 +762,18 @@ function ProjectFormDialog({
               required
             />
           </div>
+          <div className="space-y-2">
+            <Label htmlFor="description">Description</Label>
+            <Textarea
+              id="description"
+              value={formData.shortdesc}
+              onChange={(e) =>
+                setFormData({ ...formData, shortdesc: e.target.value })
+              }
+              rows={3}
+              required
+            />
+          </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
@@ -818,6 +834,52 @@ function ProjectFormDialog({
               />
             </div>
           </div>
+          <div className="space-y-2">
+            <Label>Amenities</Label>
+            <div className="flex gap-2">
+              <Input
+                value={amenity}
+                onChange={(e) => setAmenity(e.target.value)}
+                placeholder="e.g., Lift"
+              />
+              <Button type="button" onClick={handleAddAmenity}>
+                Add
+              </Button>
+            </div>
+            <div className="flex flex-wrap gap-2 mt-2">
+              {amenities.map((a, idx) => (
+                <span
+                  key={idx}
+                  className="px-2 py-1 bg-gray-200 rounded text-sm"
+                >
+                  {a}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="images">Project Images</Label>
+            <Input
+              id="images"
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={(e) => {
+                const files = e.target.files;
+                if (files && files.length > 0) {
+                  setImages((prev) => [...prev, ...Array.from(files)]);
+                }
+              }}
+            />
+            <div className="flex gap-2 mt-2 flex-wrap">
+              {images.map((img, idx) => (
+                <span key={idx} className="text-xs text-gray-600">
+                  {img.name}
+                </span>
+              ))}
+            </div>
+          </div>
 
           {formData.status === "Ongoing" && (
             <div className="space-y-2">
@@ -840,7 +902,7 @@ function ProjectFormDialog({
 
           <div className="flex gap-4 pt-4">
             <Button type="submit" className="flex-1">
-              {project ? "Update Project" : "Add Project"}
+              {isUploading?"Uploading...":"Add Project"}
             </Button>
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel

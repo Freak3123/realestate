@@ -39,3 +39,31 @@ export async function GET() {
     );
   }
 }
+
+// (optional) DELETE /api/save-proj?id=... → delete project by ID
+export async function DELETE(req: Request) {
+  try {
+    await connectDB();
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+    if (!id) {
+        return NextResponse.json(
+        { success: false, error: "Project ID is required" },
+        { status: 400 }
+        );
+    }
+    const deletedProject = await Project.findByIdAndDelete(id);
+    if (!deletedProject) {
+        return NextResponse.json(
+        { success: false, error: "Project not found" },
+        { status: 404 }
+        );
+    }
+    return NextResponse.json({ success: true, data: deletedProject });
+    } catch (error: any) {
+    return NextResponse.json(
+        { success: false, error: error.message },
+        { status: 500 }
+    );
+  }
+}
