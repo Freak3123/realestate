@@ -116,10 +116,16 @@ export default function ProjectsPage() {
 
   const handleEnquirySubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Enquiry submitted:", {
-      project: selectedProject?.title,
-      ...enquiryForm,
-    });
+    try{
+      const res = axios.post('/api/send-enquiry', {
+        project: selectedProject,
+        ...enquiryForm
+      })
+
+
+    }catch(err){
+      console.log(err)
+    }
     setEnquiryForm({ name: "", email: "", phone: "", message: "" });
     setSelectedProject(null);
   };
@@ -229,6 +235,7 @@ export default function ProjectsPage() {
                   <label className="text-sm font-medium">Message</label>
                   <Textarea
                     value={enquiryForm.message}
+                    required
                     onChange={(e) => setEnquiryForm({ ...enquiryForm, message: e.target.value })}
                     placeholder="Tell us about your requirements, preferred unit size, budget, or any specific questions..."
                     rows={6}

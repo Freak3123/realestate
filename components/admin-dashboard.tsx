@@ -69,50 +69,21 @@ interface Project {
 }
 
 interface Enquiry {
-  id: string;
-  projectId: string;
+  _id: string;
   projectTitle: string;
   name: string;
   email: string;
   phone: string;
   message: string;
   date: string;
-  status: "New" | "Contacted" | "Closed";
 }
 
-// Sample data
 
-const initialEnquiries: Enquiry[] = [
-  {
-    id: "1",
-    projectId: "1",
-    projectTitle: "Skyline Residences",
-    name: "John Smith",
-    email: "john@example.com",
-    phone: "+1 (555) 123-4567",
-    message:
-      "Interested in a 2-bedroom unit with city view. Please contact me with available options.",
-    date: "2025-01-15",
-    status: "New",
-  },
-  {
-    id: "2",
-    projectId: "2",
-    projectTitle: "Green Valley Mall",
-    name: "Sarah Johnson",
-    email: "sarah@business.com",
-    phone: "+1 (555) 987-6543",
-    message:
-      "Looking for retail space for my boutique. What are the available sizes and pricing?",
-    date: "2025-01-14",
-    status: "Contacted",
-  },
-];
 
 export function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
   const [projects, setProjects] = useState<Project[]>([]);
-  const [enquiries, setEnquiries] = useState<Enquiry[]>(initialEnquiries);
+  const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [isAddingProject, setIsAddingProject] = useState(false);
   const [alert, setAlert] = useState<{
@@ -121,13 +92,8 @@ export function AdminDashboard() {
   } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load data from localStorage on mount
   useEffect(() => {
 
-
-
-
-    //write a function to fetch projects from the endpoint /api/save-proj
     const fetchProjects = async () => {
       try {
         const response = await axios.get("/api/admin/save-proj");
@@ -138,6 +104,18 @@ export function AdminDashboard() {
         console.error("Error fetching projects:", error);
       }
     };
+
+    const fetchEnquiries = async () => {
+      try {
+        const response = await axios.get("/api/admin/enquiries");
+        if (response.data.success) {
+          setEnquiries(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching enquiries:", error);
+      }
+    };
+    fetchEnquiries();
     fetchProjects();
 
     setIsLoading(false);
@@ -150,13 +128,6 @@ export function AdminDashboard() {
         <LoaderComp />
       </div>
     );}
-
-  // Save data to localStorage
-
-  const saveEnquiries = (newEnquiries: Enquiry[]) => {
-    setEnquiries(newEnquiries);
-    localStorage.setItem("admin_enquiries", JSON.stringify(newEnquiries));
-  };
 
   const showAlert = (type: "success" | "error", message: string) => {
     setAlert({ type, message });
@@ -178,19 +149,12 @@ export function AdminDashboard() {
     }
   };
 
-  const handleUpdateEnquiryStatus = (id: string, status: Enquiry["status"]) => {
-    const newEnquiries = enquiries.map((e) =>
-      e.id === id ? { ...e, status } : e
-    );
-    saveEnquiries(newEnquiries);
-    showAlert("success", "Enquiry status updated");
-  };
 
   const stats = {
     totalProjects: projects.length,
     ongoingProjects: projects.filter((p) => p.status === "Ongoing").length,
     completedProjects: projects.filter((p) => p.status === "Completed").length,
-    newEnquiries: enquiries.filter((e) => e.status === "New").length,
+    newEnquiries: enquiries.length,
   };
 
   return (
@@ -368,7 +332,7 @@ export function AdminDashboard() {
                 <CardContent className="space-y-4">
                   {enquiries.slice(0, 3).map((enquiry) => (
                     <div
-                      key={enquiry.id}
+                      key={enquiry._id}
                       className="flex items-center justify-between"
                     >
                       <div>
@@ -377,17 +341,7 @@ export function AdminDashboard() {
                           {enquiry.projectTitle}
                         </p>
                       </div>
-                      <Badge
-                        variant={
-                          enquiry.status === "New"
-                            ? "destructive"
-                            : enquiry.status === "Contacted"
-                            ? "secondary"
-                            : "default"
-                        }
-                      >
-                        {enquiry.status}
-                      </Badge>
+                      
                     </div>
                   ))}
                 </CardContent>
@@ -503,43 +457,31 @@ export function AdminDashboard() {
 
             <div className="grid gap-4">
               {enquiries.map((enquiry) => (
-                <Card key={enquiry.id}>
+                <Card key={enquiry._id}>
                   <CardHeader>
                     <div className="flex justify-between items-start">
                       <div>
                         <CardTitle className="flex items-center gap-2">
                           {enquiry.name}
-                          <Badge
-                            variant={
-                              enquiry.status === "New"
-                                ? "destructive"
-                                : enquiry.status === "Contacted"
-                                ? "secondary"
-                                : "default"
-                            }
-                          >
-                            {enquiry.status}
-                          </Badge>
+                          
                         </CardTitle>
-                        <CardDescription>
+                        <CardDescription className="flex w-full justify-center">
+                          <div>
                           Interested in {enquiry.projectTitle} • {enquiry.date}
+                          </div>
+                          {/* <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleDeleteEnquiry(enquiry._id)}
+                          className="text-destructive hover:text-destructive"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div> */}
                         </CardDescription>
+                        
                       </div>
-                      <Select
-                        value={enquiry.status}
-                        onValueChange={(value: Enquiry["status"]) =>
-                          handleUpdateEnquiryStatus(enquiry.id, value)
-                        }
-                      >
-                        <SelectTrigger className="w-32">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="New">New</SelectItem>
-                          <SelectItem value="Contacted">Contacted</SelectItem>
-                          <SelectItem value="Closed">Closed</SelectItem>
-                        </SelectContent>
-                      </Select>
                     </div>
                   </CardHeader>
                   <CardContent>
