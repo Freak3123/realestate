@@ -149,6 +149,21 @@ export function AdminDashboard() {
     }
   };
 
+  const handleDeleteEnquiry = async (id: string) => {
+    try{
+
+      const res= await axios.delete(`/api/admin/enquiries?id=${id}`);
+      if (res.status===200){
+        const newEnquiries = enquiries.filter((e) => e._id !== id);
+        setEnquiries(newEnquiries);
+        showAlert("success", "Enquiry deleted successfully");
+      }
+    }catch(err){
+      console.log(err)
+      showAlert("error", "Error deleting enquiry");
+    }
+  };
+
 
   const stats = {
     totalProjects: projects.length,
@@ -461,15 +476,20 @@ export function AdminDashboard() {
                   <CardHeader>
                     <div className="flex justify-between items-start">
                       <div>
-                        <CardTitle className="flex items-center gap-2">
+                        <CardTitle className="flex justify-between items-center gap-2">
                           {enquiry.name}
                           
+                          
                         </CardTitle>
-                        <CardDescription className="flex w-full justify-center">
+                        <CardDescription className="flex w-full justify-evenly">
                           <div>
                           Interested in {enquiry.projectTitle} • {enquiry.date}
                           </div>
-                          {/* <div className="flex gap-2">
+                          
+                        </CardDescription>
+                        
+                      </div>
+                      <div className="flex gap-2">
                         <Button
                           variant="outline"
                           size="sm"
@@ -478,9 +498,6 @@ export function AdminDashboard() {
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
-                      </div> */}
-                        </CardDescription>
-                        
                       </div>
                     </div>
                   </CardHeader>
