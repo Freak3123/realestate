@@ -26,7 +26,7 @@ export async function POST(req: Request) {
   }
 }
 
-// (optional) GET /api/save-proj → list projects
+// GET /api/save-proj → list projects
 export async function GET() {
   try {
     await connectDB();

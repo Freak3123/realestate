@@ -24,43 +24,11 @@ import { AnimatedSection } from "@/components/animated-section";
 import Lottie from "lottie-react";
 import animationData from "@/public/lottie/Construction.json";
 import { HeroCarousel } from "@/components/hero-carousel";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
-// Sample project data
-const featuredProjects = [
-  {
-    id: 1,
-    title: "Skyline Residences",
-    location: "Downtown District",
-    type: "Residential",
-    status: "Ongoing",
-    image: "/placeholder-ll1hv.png",
-    description:
-      "Luxury residential complex with 200 units featuring modern amenities and panoramic city views.",
-    completion: "Q2 2025",
-  },
-  {
-    id: 2,
-    title: "Green Valley Mall",
-    location: "Suburban Center",
-    type: "Commercial",
-    status: "Completed",
-    image: "/modern-shopping-mall.png",
-    description:
-      "State-of-the-art shopping center with sustainable design and premium retail spaces.",
-    completion: "Completed 2025",
-  },
-  {
-    id: 3,
-    title: "Oceanview Towers",
-    location: "Coastal Area",
-    type: "Mixed-Use",
-    status: "Ongoing",
-    image: "/coastal-towers-mixed-use.png",
-    description:
-      "Mixed-use development combining residential, commercial, and recreational facilities.",
-    completion: "Q4 2025",
-  },
-];
+
 
 const stats = [
   { icon: Building2, label: "Projects Completed", value: "150+" },
@@ -94,28 +62,31 @@ const values = [
   },
 ]
 
-// const services = [
-//   {
-//     title: "Residential Development",
-//     description:
-//       "Creating modern living spaces that combine comfort, style, and functionality for families and individuals.",
-//     icon: Building2,
-//   },
-//   {
-//     title: "Commercial Projects",
-//     description:
-//       "Developing innovative commercial spaces that drive business growth and community engagement.",
-//     icon: TrendingUp,
-//   },
-//   {
-//     title: "Mixed-Use Development",
-//     description:
-//       "Integrating residential, commercial, and recreational spaces for vibrant community living.",
-//     icon: Users,
-//   },
-// ];
 
 export default function HomePage() {
+
+  const [FeaturedProjects, setFeaturedProjects] = useState<any[]>([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    
+    const fetchFeaturedProjects = async () => {
+      try {
+        const response = await axios.get('/api/featured-projects');
+        setFeaturedProjects(response.data.data);
+      } catch (error) {
+        console.error('Error fetching featured projects:', error);
+      } 
+    };
+    fetchFeaturedProjects();
+  }, []);
+
+  // const projectsToDisplay = FeaturedProjects.length > 0 ? FeaturedProjects : featuredProjects;
+
+
+
+
+
   return (
     <div className="min-h-screen bg-background">
       <HeroCarousel />
@@ -183,9 +154,9 @@ export default function HomePage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredProjects.map((project) => (
+            {FeaturedProjects.map((project) => (
               <Card
-                key={project.id}
+                key={project._id}
                 className="overflow-hidden hover:shadow-lg transition-shadow"
               >
                 <div className="relative">
@@ -229,7 +200,8 @@ export default function HomePage() {
           </div>
 
           <div className="text-center mt-12 text-foreground">
-            <Button size="lg" variant="secondary">
+            <Button size="lg" onClick={()=>{router.push('/projects')}} variant="secondary"
+            >
               View All Projects
             </Button>
           </div>

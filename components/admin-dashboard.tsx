@@ -66,6 +66,8 @@ interface Project {
   image?: string;
   images?: string[];
   amenities?: string[];
+  featured: boolean;
+  shortdesc: string;
 }
 
 interface Enquiry {
@@ -581,6 +583,7 @@ function ProjectFormDialog({
     progress: 0,
     amenities: [],
     images: [],
+    featured: false,
   });
   const [amenity, setAmenity] = useState("");
   const [amenities, setAmenities] = useState<string[]>([]);
@@ -605,6 +608,7 @@ function ProjectFormDialog({
       const form = new FormData();
       images.forEach((file) => form.append("files", file));
       form.append("title", formData.title);
+      
 
       const res = await fetch("/api/upload", { method: "POST", body: form });
 
@@ -792,6 +796,20 @@ function ProjectFormDialog({
                 required
               />
             </div>
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                checked={formData.featured}
+                onChange={(e) =>
+                  setFormData({ ...formData, featured: e.target.checked })
+                }
+                className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+              />
+              <label className="text-sm font-medium text-gray-700">
+                Mark as Featured
+              </label>
+            </div>
+
           </div>
           <div className="space-y-2">
             <Label>Amenities</Label>

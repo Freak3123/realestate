@@ -311,7 +311,7 @@ export default function ProjectsPage() {
                   </div>
 
                   <div className="flex items-center justify-between text-sm">
-                    <span className="font-medium">{selectedProject.price}</span>
+                    <span className="font-semibold text-lg">{selectedProject.price}</span>
                     <span className="text-muted-foreground flex items-center gap-1">
                       <Calendar className="h-4 w-4" />
                       {selectedProject.completion}
