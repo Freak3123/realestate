@@ -5,10 +5,12 @@ import { Phone, Menu, X } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "./ui/button"
+import { usePathname } from "next/navigation" 
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+  const pathname = usePathname() 
 
   // Close menu if clicked outside
   useEffect(() => {
@@ -27,6 +29,12 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [mobileOpen])
 
+  // helper to check active link
+  const linkClass = (href: string) =>
+    pathname === href
+      ? "text-foreground"
+      : "text-muted-foreground hover:text-primary transition-colors"
+
   return (
     <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -43,13 +51,13 @@ const Navbar = () => {
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
-            <Link href="/" className="text-foreground hover:text-primary transition-colors">
+            <Link href="/" className={linkClass("/")}>
               Home
             </Link>
-            <Link href="/projects" className="text-muted-foreground hover:text-primary transition-colors">
+            <Link href="/projects" className={linkClass("/projects")}>
               Projects
             </Link>
-            <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">
+            <Link href="/about" className={linkClass("/about")}>
               About
             </Link>
             <Button variant="outline" size="sm">
@@ -73,25 +81,13 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {mobileOpen && (
         <div ref={menuRef} className="md:hidden border-t bg-background px-4 py-4 space-y-4">
-          <Link
-            href="/"
-            onClick={() => setMobileOpen(false)}
-            className="block text-foreground hover:text-primary transition-colors"
-          >
+          <Link href="/" onClick={() => setMobileOpen(false)} className={linkClass("/")}>
             Home
           </Link>
-          <Link
-            href="/projects"
-            onClick={() => setMobileOpen(false)}
-            className="block text-muted-foreground hover:text-primary transition-colors"
-          >
+          <Link href="/projects" onClick={() => setMobileOpen(false)} className={linkClass("/projects")}>
             Projects
           </Link>
-          <Link
-            href="/about"
-            onClick={() => setMobileOpen(false)}
-            className="block text-muted-foreground hover:text-primary transition-colors"
-          >
+          <Link href="/about" onClick={() => setMobileOpen(false)} className={linkClass("/about")}>
             About
           </Link>
           <Button

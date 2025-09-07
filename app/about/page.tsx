@@ -98,10 +98,10 @@ export default function AboutPage() {
     <div className="min-h-screen bg-background">
       <div className="w-full h-[20rem]">
         <Image
-          src="/about_placeholder.png"
-          alt="PrimeRealty headquarters"
-          width={1000}
-          height={1000}
+          src="/image.png"
+          alt="headquarters"
+          width={2000}
+          height={2000}
           className="object-cover w-full h-[20rem] "
         />
       </div>
