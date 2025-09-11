@@ -278,7 +278,7 @@ export default function AboutPage() {
       </AnimatedSection>
 
       {/* Stats */}
-      <AnimatedSection className="py-16 bg-primary text-primary-foreground">
+      {/* <AnimatedSection className="py-16 bg-primary text-primary-foreground">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center space-y-2">
@@ -305,20 +305,20 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-      </AnimatedSection>
+      </AnimatedSection> */}
 
       {/* CTA */}
-      <AnimatedSection className="py-20 bg-background">
+      <AnimatedSection className="py-20 bg-primary text-primary-foreground">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
-          <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
+          <h2 className="text-3xl lg:text-4xl font-bold">
             Ready to Work With Us?
           </h2>
-          <p className="text-xl text-muted-foreground">
+          <p className="text-xl text-primary-foreground/90">
             Whether you're looking to invest, partner, or find your dream
             property, we're here to help make it happen.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="text-lg px-8">
+            <Button size="lg" variant="secondary" className="text-lg px-8">
               <Mail className="h-5 w-5 mr-2" />
               Get In Touch
             </Button>
