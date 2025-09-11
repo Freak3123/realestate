@@ -63,10 +63,19 @@ const Navbar = () => {
             <Link href="/about" className={linkClass("/about")}>
               About
             </Link>
-            <Button variant="outline" size="sm">
-              <Phone className="h-4 w-4 mr-2" />
-              Contact
-            </Button>
+            <Link href="/contact-us">
+              <Button
+                size="sm"
+                className={
+                  pathname === "/contact-us"
+                    ? "bg-primary text-white hover:bg-primary/90 border"
+                    : "border border-input bg-background text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                }
+              >
+                <Phone className="h-4 w-4 mr-2" />
+                Contact
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Hamburger */}
@@ -112,15 +121,19 @@ const Navbar = () => {
           >
             About
           </Link>
-          <Button
-            variant="outline"
-            size="sm"
-            className="w-full"
-            onClick={() => setMobileOpen(false)}
-          >
-            <Phone className="h-4 w-4 mr-2" />
-            Contact
-          </Button>
+          <Link href="/contact-us" onClick={() => setMobileOpen(false)}>
+            <Button
+              size="sm"
+              className={`w-full ${
+                pathname === "/contact-us"
+                  ? "bg-primary text-white hover:bg-primary/90"
+                  : "border border-input bg-background hover:bg-accent hover:text-accent-foreground"
+              }`}
+            >
+              <Phone className="h-4 w-4 mr-2" />
+              Contact
+            </Button>
+          </Link>
         </div>
       )}
     </nav>
