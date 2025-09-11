@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -28,8 +28,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-
-
 const stats = [
   { icon: Building2, label: "Projects Completed", value: "150+" },
   { icon: Users, label: "Happy Clients", value: "500+" },
@@ -42,13 +40,13 @@ const values = [
     title: "Integrity & Transparency",
     description:
       "We believe trust is the foundation of long-term partnerships.",
-    icon: Building2, 
+    icon: Building2,
   },
   {
     title: "Quality First",
     description:
       "Every project is delivered with precision, safety, and durability.",
-    icon: TrendingUp, 
+    icon: TrendingUp,
   },
   {
     title: "Innovation & Sustainability",
@@ -57,35 +55,56 @@ const values = [
   },
   {
     title: "Community Impact",
-    description: "Our work is designed to uplift communities and create lasting value.",
+    description:
+      "Our work is designed to uplift communities and create lasting value.",
     icon: Award,
   },
-]
+];
 
+const services = [
+  {
+    title: "Residential Development",
+    description:
+      "From luxury apartments to affordable housing, we create living spaces that inspire.",
+    icon: Building2,
+  },
+  {
+    title: "Infrastructure Consulting",
+    description:
+      "Expert advice on urban planning, transportation, and public works projects.",
+    icon: Award,
+  },
+  {
+    title: "Commercial Projects",
+    description:
+      "We deliver state-of-the-art office buildings, retail centers, and mixed-use developments.",
+    icon: TrendingUp,
+  },
+  {
+    title: "Project Management",
+    description:
+      "Comprehensive oversight from concept to completion, ensuring timelines and budgets are met.",
+    icon: Users,
+  },
+];
 
 export default function HomePage() {
-
   const [FeaturedProjects, setFeaturedProjects] = useState<any[]>([]);
   const router = useRouter();
 
   useEffect(() => {
-    
     const fetchFeaturedProjects = async () => {
       try {
-        const response = await axios.get('/api/featured-projects');
+        const response = await axios.get("/api/featured-projects");
         setFeaturedProjects(response.data.data);
       } catch (error) {
-        console.error('Error fetching featured projects:', error);
-      } 
+        console.error("Error fetching featured projects:", error);
+      }
     };
     fetchFeaturedProjects();
   }, []);
 
   // const projectsToDisplay = FeaturedProjects.length > 0 ? FeaturedProjects : featuredProjects;
-
-
-
-
 
   return (
     <div className="min-h-screen bg-background">
@@ -95,11 +114,12 @@ export default function HomePage() {
       <AnimatedSection className="py-12 bg-primary text-primary-foreground">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center space-y-2">
-                <stat.icon className="h-8 w-8 mx-auto mb-4 opacity-90" />
-                <div className="text-3xl font-bold">{stat.value}</div>
-                <div className="text-primary-foreground/80">{stat.label}</div>
+            {services.map((service, index) => (
+              <div key={index} className="text-center space-y-2 group relative">
+                <service.icon className="h-8 w-8 mx-auto mb-4 opacity-90" />
+                <div className="text-xl font-bold whitespace-pre-line">
+                  {service.title.replace(" ", "\n")}
+                </div>
               </div>
             ))}
           </div>
@@ -200,7 +220,12 @@ export default function HomePage() {
           </div>
 
           <div className="text-center mt-12 text-foreground">
-            <Button size="lg" onClick={()=>{router.push('/projects')}} variant="secondary"
+            <Button
+              size="lg"
+              onClick={() => {
+                router.push("/projects");
+              }}
+              variant="secondary"
             >
               View All Projects
             </Button>
