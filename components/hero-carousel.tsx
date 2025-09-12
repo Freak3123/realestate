@@ -94,7 +94,7 @@ export function HeroCarousel() {
                 View Projects
               </Link>
               <Link
-                href="/#contact"
+                href="/contact-us"
                 className="inline-flex items-center justify-center rounded-md border border-white/25 bg-white/10 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
               >
                 Contact Us

@@ -37,7 +37,7 @@ import Link from "next/link";
 import { AnimatedSection } from "@/components/animated-section";
 import Image from "next/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ImageLightbox } from "@/components/image-lightbox"
+import { ImageLightbox } from "@/components/image-lightbox";
 import axios from "axios";
 import LoaderComp from "@/components/LoaderComp";
 
@@ -80,51 +80,51 @@ export default function ProjectsPage() {
     message: "",
   });
 
-  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [projectDetails, setProjectDetails] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!selectedProject) setLightboxOpen(false)
+    if (!selectedProject) setLightboxOpen(false);
 
     async function getProjectDetails() {
+      try {
+        const res = await axios.get("/api/admin/save-proj");
 
-      try{
-        const res = await axios.get('/api/admin/save-proj');
-
-        console.log(res.data)
+        console.log(res.data);
         setProjectDetails(res.data.data);
 
         setLoading(false);
-      
-      }catch(err){
-        console.log(err)
-        
-      }}
+      } catch (err) {
+        console.log(err);
+      }
+    }
     getProjectDetails();
-  }, [selectedProject])
-  if (loading) return (
-    <div className="min-h-screen w-full bg-background flex items-center justify-center">
-      <LoaderComp/>
-    </div>
+  }, [selectedProject]);
+  if (loading)
+    return (
+      <div className="min-h-screen w-full bg-background flex items-center justify-center">
+        <LoaderComp />
+      </div>
+    );
 
-  )
-
-  const ongoingProjects = projectDetails.filter((p: any) => p.status === "Ongoing");
-  const completedProjects = projectDetails.filter((p: any) => p.status === "Completed");
+  const ongoingProjects = projectDetails.filter(
+    (p: any) => p.status === "Ongoing"
+  );
+  const completedProjects = projectDetails.filter(
+    (p: any) => p.status === "Completed"
+  );
 
   const handleEnquirySubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    try{
-      const res = axios.post('/api/send-enquiry', {
+    try {
+      const res = axios.post("/api/send-enquiry", {
         project: selectedProject,
-        ...enquiryForm
-      })
-
-
-    }catch(err){
-      console.log(err)
+        ...enquiryForm,
+      });
+    } catch (err) {
+      console.log(err);
     }
     setEnquiryForm({ name: "", email: "", phone: "", message: "" });
     setSelectedProject(null);
@@ -133,22 +133,13 @@ export default function ProjectsPage() {
   return (
     <div className="min-h-screen w-full bg-background">
       {/* Header */}
-      <AnimatedSection className="py-16 bg-gradient-to-br from-background to-muted/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex md:hidden items-center gap-4 mb-8">
-            <Link
-              href="/"
-              className="text-muted-foreground hover:text-primary transition-colors"
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </Link>
-            <Badge variant="secondary">Our Portfolio</Badge>
-          </div>
+      <AnimatedSection className="flex items-center justify-center py-16 bg-gradient-to-br from-background to-muted/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="space-y-4">
             <h1 className="text-4xl lg:text-6xl font-bold text-foreground">
               Our Projects
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Explore our portfolio of residential, commercial, and mixed-use
               developments.
             </p>
@@ -157,7 +148,7 @@ export default function ProjectsPage() {
       </AnimatedSection>
 
       {/* Tabs */}
-      <AnimatedSection className="py-16">
+      <AnimatedSection>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Tabs defaultValue="all" className="space-y-8">
             <TabsList className="grid w-full max-w-md mx-auto grid-cols-3">
@@ -167,7 +158,10 @@ export default function ProjectsPage() {
             </TabsList>
 
             <TabsContent value="all">
-              <ProjectGrid projects={projectDetails} onEnquiry={setSelectedProject} />
+              <ProjectGrid
+                projects={projectDetails}
+                onEnquiry={setSelectedProject}
+              />
             </TabsContent>
             <TabsContent value="ongoing">
               <ProjectGrid
@@ -186,154 +180,197 @@ export default function ProjectsPage() {
       </AnimatedSection>
 
       {/* Enquiry Dialog */}
-      <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
+      <Dialog
+        open={!!selectedProject}
+        onOpenChange={() => setSelectedProject(null)}
+      >
         <DialogContent className="min-w-[80vw] min-h-[60vh] lg:min-w-[60vw]">
           <ScrollArea className="h-[70vh] pr-4 md:h-full">
-          <DialogHeader>
-            <DialogTitle>Enquire About {selectedProject?.title}</DialogTitle>
-            <DialogDescription>
-              Share your details and we’ll get back to you with availability and pricing.
-            </DialogDescription>
-          </DialogHeader>
+            <DialogHeader>
+              <DialogTitle>Enquire About {selectedProject?.title}</DialogTitle>
+              <DialogDescription>
+                Share your details and we’ll get back to you with availability
+                and pricing.
+              </DialogDescription>
+            </DialogHeader>
 
-          {selectedProject && (
-            <div className="grid gap-6 md:flex lg:gap-12 my-10 md:my-6">
-              {/* Left: Enquiry Form */}
-              <form onSubmit={handleEnquirySubmit} className="space-y-4 mt-6 order-2 md:order-1 border p-6 rounded-md shadow-xl ">
-                <div className="grid grid-cols-2 gap-4">
+            {selectedProject && (
+              <div className="grid gap-6 md:flex lg:gap-12 my-10 md:my-6">
+                {/* Left: Enquiry Form */}
+                <form
+                  onSubmit={handleEnquirySubmit}
+                  className="space-y-4 mt-6 order-2 md:order-1 border p-6 rounded-md shadow-xl "
+                >
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Full Name</label>
+                      <Input
+                        required
+                        value={enquiryForm.name}
+                        onChange={(e) =>
+                          setEnquiryForm({
+                            ...enquiryForm,
+                            name: e.target.value,
+                          })
+                        }
+                        placeholder="Your full name"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">
+                        Phone Number
+                      </label>
+                      <Input
+                        required
+                        type="tel"
+                        value={enquiryForm.phone}
+                        onChange={(e) =>
+                          setEnquiryForm({
+                            ...enquiryForm,
+                            phone: e.target.value,
+                          })
+                        }
+                        placeholder="Your phone number"
+                      />
+                    </div>
+                  </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">Full Name</label>
+                    <label className="text-sm font-medium">Email Address</label>
                     <Input
                       required
-                      value={enquiryForm.name}
-                      onChange={(e) => setEnquiryForm({ ...enquiryForm, name: e.target.value })}
-                      placeholder="Your full name"
+                      type="email"
+                      value={enquiryForm.email}
+                      onChange={(e) =>
+                        setEnquiryForm({
+                          ...enquiryForm,
+                          email: e.target.value,
+                        })
+                      }
+                      placeholder="your.email@example.com"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">Phone Number</label>
-                    <Input
+                    <label className="text-sm font-medium">Message</label>
+                    <Textarea
+                      value={enquiryForm.message}
                       required
-                      type="tel"
-                      value={enquiryForm.phone}
-                      onChange={(e) => setEnquiryForm({ ...enquiryForm, phone: e.target.value })}
-                      placeholder="Your phone number"
+                      onChange={(e) =>
+                        setEnquiryForm({
+                          ...enquiryForm,
+                          message: e.target.value,
+                        })
+                      }
+                      placeholder="Tell us about your requirements, preferred unit size, budget, or any specific questions..."
+                      rows={6}
                     />
                   </div>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Email Address</label>
-                  <Input
-                    required
-                    type="email"
-                    value={enquiryForm.email}
-                    onChange={(e) => setEnquiryForm({ ...enquiryForm, email: e.target.value })}
-                    placeholder="your.email@example.com"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Message</label>
-                  <Textarea
-                    value={enquiryForm.message}
-                    required
-                    onChange={(e) => setEnquiryForm({ ...enquiryForm, message: e.target.value })}
-                    placeholder="Tell us about your requirements, preferred unit size, budget, or any specific questions..."
-                    rows={6}
-                  />
-                </div>
-                <div className="flex gap-4 pt-2">
-                  <Button type="submit" className="flex-1">
-                    <Mail className="h-4 w-4 mr-2" />
-                    Send Enquiry
-                  </Button>
-                  <Button type="button" variant="outline" onClick={() => setSelectedProject(null)}>
-                    Cancel
-                  </Button>
-                </div>
-              </form>
+                  <div className="flex gap-4 pt-2">
+                    <Button type="submit" className="flex-1">
+                      <Mail className="h-4 w-4 mr-2" />
+                      Send Enquiry
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setSelectedProject(null)}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </form>
 
-              {/* Right: Property Details + Gallery */}
-              <div className="order-1 md:order-2">
-                <div className="space-y-4">
-                  <div className="space-y-1">
-                    <h3 className="text-xl font-semibold">{selectedProject.title}</h3>
-                    <p className="text-sm text-muted-foreground flex items-center gap-1">
-                      <MapPin className="h-4 w-4" /> {selectedProject.location}
+                {/* Right: Property Details + Gallery */}
+                <div className="order-1 md:order-2">
+                  <div className="space-y-4">
+                    <div className="space-y-1">
+                      <h3 className="text-xl font-semibold">
+                        {selectedProject.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground flex items-center gap-1">
+                        <MapPin className="h-4 w-4" />{" "}
+                        {selectedProject.location}
+                      </p>
+                    </div>
+
+                    {/* Image gallery */}
+                    <div className="grid grid-cols-3 gap-2">
+                      {selectedProject.images?.slice(0, 3).map((src, idx) => {
+                        const total = selectedProject.images?.length ?? 0;
+                        const showOverlay = idx === 2 && total > 3;
+                        const remaining = Math.max(0, total - 3);
+                        return (
+                          <button
+                            key={idx}
+                            type="button"
+                            onClick={() => {
+                              setLightboxIndex(idx);
+                              setLightboxOpen(true);
+                            }}
+                            className="relative group h-28 lg:h-[16rem] w-full overflow-hidden rounded"
+                            aria-label={`Open image ${idx + 1} of ${total}`}
+                          >
+                            <Image
+                              src={src || "/placeholder.svg"}
+                              alt={`${selectedProject.title} image ${idx + 1}`}
+                              width={1000}
+                              height={1000}
+                              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            />
+                            {showOverlay && (
+                              <div className="absolute inset-0 bg-black/60 text-white grid place-items-center text-sm font-medium">
+                                +{remaining}
+                              </div>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {/* Description and quick facts */}
+                    <p className="text-sm text-muted-foreground">
+                      {selectedProject.description}
                     </p>
-                  </div>
 
-                  {/* Image gallery */}
-                  <div className="grid grid-cols-3 gap-2">
-                    {selectedProject.images?.slice(0, 3).map((src, idx) => {
-                      const total = selectedProject.images?.length ?? 0
-                      const showOverlay = idx === 2 && total > 3
-                      const remaining = Math.max(0, total - 3)
-                      return (
-                        <button
-                          key={idx}
-                          type="button"
-                          onClick={() => {
-                            setLightboxIndex(idx)
-                            setLightboxOpen(true)
-                          }}
-                          className="relative group h-28 lg:h-[16rem] w-full overflow-hidden rounded"
-                          aria-label={`Open image ${idx + 1} of ${total}`}
-                        >
-                          <Image
-                            src={src || "/placeholder.svg"}
-                            alt={`${selectedProject.title} image ${idx + 1}`}
-                            width={1000}
-                            height={1000}
-                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                          />
-                          {showOverlay && (
-                            <div className="absolute inset-0 bg-black/60 text-white grid place-items-center text-sm font-medium">
-                              +{remaining}
-                            </div>
-                          )}
-                        </button>
-                      )
-                    })}
-                  </div>
-
-                  {/* Description and quick facts */}
-                  <p className="text-sm text-muted-foreground">{selectedProject.description}</p>
-
-                  <div className="grid grid-cols-3 gap-3 text-sm">
-                    <div className="flex items-center gap-2">
-                      <Home className="h-4 w-4 text-muted-foreground" />
-                      <span>{selectedProject.bhk} </span>
+                    <div className="grid grid-cols-3 gap-3 text-sm">
+                      <div className="flex items-center gap-2">
+                        <Home className="h-4 w-4 text-muted-foreground" />
+                        <span>{selectedProject.bhk} </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Car className="h-4 w-4 text-muted-foreground" />
+                        <span>{selectedProject.floors} Floors</span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Car className="h-4 w-4 text-muted-foreground" />
-                      <span>{selectedProject.floors} Floors</span>
+
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="font-semibold text-lg">
+                        {selectedProject.price}
+                      </span>
+                      <span className="text-muted-foreground flex items-center gap-1">
+                        <Calendar className="h-4 w-4" />
+                        {selectedProject.completion}
+                      </span>
                     </div>
-                  </div>
 
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="font-semibold text-lg">{selectedProject.price}</span>
-                    <span className="text-muted-foreground flex items-center gap-1">
-                      <Calendar className="h-4 w-4" />
-                      {selectedProject.completion}
-                    </span>
-                  </div>
-
-                  {/* Amenities */}
-                  <div className="space-y-1">
-                    <p className="text-sm font-medium">Amenities</p>
-                    <div className="flex flex-wrap gap-1">
-                      {selectedProject.amenities.map((a, i) => (
-                        <Badge key={i} variant="secondary" className="text-xs">
-                          {a}
-                        </Badge>
-                      ))}
+                    {/* Amenities */}
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium">Amenities</p>
+                      <div className="flex flex-wrap gap-1">
+                        {selectedProject.amenities.map((a, i) => (
+                          <Badge
+                            key={i}
+                            variant="secondary"
+                            className="text-xs"
+                          >
+                            {a}
+                          </Badge>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
-
+            )}
           </ScrollArea>
         </DialogContent>
       </Dialog>
@@ -409,5 +446,3 @@ function ProjectCard({ project, onEnquiry }: any) {
     </Card>
   );
 }
-
-

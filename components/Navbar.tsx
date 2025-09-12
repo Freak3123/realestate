@@ -36,7 +36,8 @@ const Navbar = () => {
       : "text-muted-foreground hover:text-primary transition-colors";
 
   return (
-    <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 sticky top-0 z-50">
+    // <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 sticky top-0 z-50">
+    <nav className="border-b bg-white sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -73,7 +74,7 @@ const Navbar = () => {
                 }
               >
                 <Phone className="h-4 w-4 mr-2" />
-                Contact
+                Contact Us
               </Button>
             </Link>
           </div>
