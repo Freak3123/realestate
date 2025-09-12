@@ -27,11 +27,21 @@ import { AnimatedSection } from "@/components/animated-section";
 import Lottie from "lottie-react";
 import animationData from "@/public/lottie/City.json";
 import HoverCard from "@/components/hovercards";
-import { 
-  FiMapPin, FiTruck, FiFileText, FiFile, 
-  FiCreditCard, FiTrendingUp, FiUsers, 
-  FiRepeat, FiTool, FiHome, FiActivity, FiEdit 
+import {
+  FiMapPin,
+  FiTruck,
+  FiFileText,
+  FiFile,
+  FiCreditCard,
+  FiTrendingUp,
+  FiUsers,
+  FiRepeat,
+  FiTool,
+  FiHome,
+  FiActivity,
+  FiEdit,
 } from "react-icons/fi";
+import { motion } from "framer-motion";
 
 // Team data
 const teamMembers = [
@@ -55,19 +65,76 @@ const teamMembers = [
   },
 ];
 
+const cardVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0 },
+};
+
 const services = [
-  { title: "Site Visits", description: "Organizing and accompanying clients for property site inspections.", icon: FiMapPin },
-  { title: "Logistic Help", description: "Providing support with transportation and site coordination.", icon: FiTruck },
-  { title: "Negotiation", description: "Assisting in securing the best deals for buyers and sellers.", icon: FiActivity }, // replaced FiHandshake
-  { title: "Legal Verification Assistance", description: "Helping clients verify property documents for legal compliance.", icon: FiFileText },
-  { title: "Documentation", description: "Ensuring seamless and error-free paperwork.", icon: FiFile },
-  { title: "Home Loan Assistance", description: "Guiding clients through the home loan process.", icon: FiCreditCard },
-  { title: "Sale Deed Execution", description: "Facilitating the smooth execution of sale deeds.", icon: FiEdit }, // replaced FiFileCheck
-  { title: "Sale, Purchase & Investment Advisory", description: "Offering expert guidance for property transactions and investments.", icon: FiTrendingUp },
-  { title: "Developer Consultation & Project Advisory", description: "Providing end-to-end support to developers in conceptualizing and executing real estate projects.", icon: FiUsers },
-  { title: "Resale Assistance", description: "Providing support in reselling properties at the best value.", icon: FiRepeat },
-  { title: "Renovation Assistance", description: "Assisting with property renovation needs.", icon: FiTool },
-  { title: "Property Management", description: "Offering end-to-end management services for property owners.", icon: FiHome }
+  {
+    title: "Site Visits",
+    description:
+      "Organizing and accompanying clients for property site inspections.",
+    icon: FiMapPin,
+  },
+  {
+    title: "Logistic Help",
+    description: "Providing support with transportation and site coordination.",
+    icon: FiTruck,
+  },
+  {
+    title: "Negotiation",
+    description: "Assisting in securing the best deals for buyers and sellers.",
+    icon: FiActivity,
+  }, // replaced FiHandshake
+  {
+    title: "Legal Verification Assistance",
+    description:
+      "Helping clients verify property documents for legal compliance.",
+    icon: FiFileText,
+  },
+  {
+    title: "Documentation",
+    description: "Ensuring seamless and error-free paperwork.",
+    icon: FiFile,
+  },
+  {
+    title: "Home Loan Assistance",
+    description: "Guiding clients through the home loan process.",
+    icon: FiCreditCard,
+  },
+  {
+    title: "Sale Deed Execution",
+    description: "Facilitating the smooth execution of sale deeds.",
+    icon: FiEdit,
+  }, // replaced FiFileCheck
+  {
+    title: "Sale, Purchase & Investment Advisory",
+    description:
+      "Offering expert guidance for property transactions and investments.",
+    icon: FiTrendingUp,
+  },
+  {
+    title: "Developer Consultation & Project Advisory",
+    description:
+      "Providing end-to-end support to developers in conceptualizing and executing real estate projects.",
+    icon: FiUsers,
+  },
+  {
+    title: "Resale Assistance",
+    description: "Providing support in reselling properties at the best value.",
+    icon: FiRepeat,
+  },
+  {
+    title: "Renovation Assistance",
+    description: "Assisting with property renovation needs.",
+    icon: FiTool,
+  },
+  {
+    title: "Property Management",
+    description: "Offering end-to-end management services for property owners.",
+    icon: FiHome,
+  },
 ];
 
 const milestones = [
@@ -109,9 +176,6 @@ export default function AboutPage() {
       {/* Header */}
       <AnimatedSection className="py-16 bg-gradient-to-br from-background to-muted/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-4 mb-8">
-            <Badge variant="secondary">About Us</Badge>
-          </div>
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <h1 className="text-4xl lg:text-6xl font-bold text-foreground">
@@ -140,9 +204,6 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-6">
-              <Badge variant="secondary" className="w-fit">
-                Our Story
-              </Badge>
               <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
                 From Vision to Reality
               </h2>
@@ -235,45 +296,56 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <motion.div
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ staggerChildren: 0.2 }}
+          >
             {teamMembers.map((member) => (
-              <Card
+              <motion.div
                 key={member.id}
-                className="overflow-hidden hover:shadow-lg transition-shadow"
+                variants={cardVariants}
+                transition={{ duration: 0.6, ease: "easeOut" }}
               >
-                <div className="relative">
-                  <Image
-                    src={member.image || "/placeholder.svg"}
-                    alt={member.name}
-                    width={1000}
-                    height={1000}
-                    className="w-full h-64 object-cover"
-                  />
-                </div>
-                <CardHeader>
-                  <CardTitle className="text-xl">{member.name}</CardTitle>
-                  <CardDescription className="text-primary font-medium">
-                    {member.position}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-muted-foreground text-sm">{member.bio}</p>
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="sm" asChild>
-                      <Link href={member.linkedin}>
-                        <Linkedin className="h-4 w-4" />
-                      </Link>
-                    </Button>
-                    <Button variant="outline" size="sm" asChild>
-                      <Link href={member.twitter}>
-                        <Twitter className="h-4 w-4" />
-                      </Link>
-                    </Button>
+                <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+                  <div className="relative">
+                    <Image
+                      src={member.image || "/placeholder.svg"}
+                      alt={member.name}
+                      width={1000}
+                      height={1000}
+                      className="w-full h-64 object-cover"
+                    />
                   </div>
-                </CardContent>
-              </Card>
+                  <CardHeader>
+                    <CardTitle className="text-xl">{member.name}</CardTitle>
+                    <CardDescription className="text-primary font-medium">
+                      {member.position}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <p className="text-muted-foreground text-sm">
+                      {member.bio}
+                    </p>
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="sm" asChild>
+                        <Link href={member.linkedin}>
+                          <Linkedin className="h-4 w-4" />
+                        </Link>
+                      </Button>
+                      <Button variant="outline" size="sm" asChild>
+                        <Link href={member.twitter}>
+                          <Twitter className="h-4 w-4" />
+                        </Link>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </AnimatedSection>
 

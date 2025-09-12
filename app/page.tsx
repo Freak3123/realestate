@@ -27,6 +27,17 @@ import { HeroCarousel } from "@/components/hero-carousel";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+
+const cardVariants = {
+  hidden: { opacity: 0, scale: 0.9, y: 30 },
+  visible: { opacity: 1, scale: 1, y: 0 },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0 },
+};
 
 const stats = [
   { icon: Building2, label: "Projects Completed", value: "150+" },
@@ -112,19 +123,30 @@ export default function HomePage() {
 
       {/* Stats Section */}
       <AnimatedSection className="py-12 bg-primary text-primary-foreground">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {services.map((service, index) => (
-              <div key={index} className="text-center space-y-2 group relative">
-                <service.icon className="h-8 w-8 mx-auto mb-4 opacity-90" />
-                <div className="text-xl font-bold whitespace-pre-line">
-                  {service.title.replace(" ", "\n")}
-                </div>
-              </div>
-            ))}
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <motion.div
+      className="grid grid-cols-2 lg:grid-cols-4 gap-8"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ staggerChildren: 0.15 }}
+    >
+      {services.map((service, index) => (
+        <motion.div
+          key={index}
+          variants={itemVariants}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="text-center space-y-2 group relative"
+        >
+          <service.icon className="h-8 w-8 mx-auto mb-4 opacity-90 group-hover:scale-110 transition-transform duration-300" />
+          <div className="text-xl font-bold whitespace-pre-line">
+            {service.title.replace(" ", "\n")}
           </div>
-        </div>
-      </AnimatedSection>
+        </motion.div>
+      ))}
+    </motion.div>
+  </div>
+</AnimatedSection>
 
       {/* About us */}
       <AnimatedSection className="py-14 bg-muted/30">
@@ -237,9 +259,6 @@ export default function HomePage() {
       <AnimatedSection className="py-20 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-16">
-            <Badge variant="secondary" className="w-fit mx-auto">
-              Our Values
-            </Badge>
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
               What Drives Us
             </h2>
@@ -249,22 +268,31 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <motion.div
+            className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ staggerChildren: 0.15 }}
+          >
             {values.map((value, index) => (
-              <Card
+              <motion.div
                 key={index}
-                className="text-center p-6 hover:shadow-lg transition-shadow"
+                variants={cardVariants}
+                transition={{ duration: 0.5, ease: "easeOut" }}
               >
-                <CardHeader>
-                  <value.icon className="h-12 w-12 text-primary mx-auto mb-4" />
-                  <CardTitle className="text-xl">{value.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">{value.description}</p>
-                </CardContent>
-              </Card>
+                <Card className="text-center p-6 hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <value.icon className="h-12 w-12 text-primary mx-auto mb-4" />
+                    <CardTitle className="text-xl">{value.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground">{value.description}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </AnimatedSection>
 
