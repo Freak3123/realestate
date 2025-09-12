@@ -47,6 +47,12 @@ const Footer = () => {
               >
                 About
               </Link>
+              <Link
+                href="/contact-us"
+                className="block text-muted-foreground hover:text-primary transition-colors"
+              >
+                Contact Us
+              </Link>
             </div>
           </div>
 
