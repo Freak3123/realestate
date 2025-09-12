@@ -9,9 +9,9 @@ export default function ContactPage() {
     name: "",
     email: "",
     phone: "",
-    message: "",
-    total: "",
+    message: ""
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -21,6 +21,7 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
     const res = await fetch("/api/contact", {
       method: "POST",
@@ -30,10 +31,11 @@ export default function ContactPage() {
 
     if (res.ok) {
       alert("Message sent successfully!");
-      setFormData({ name: "", email: "", phone: "", message: "", total: "" });
+      setFormData({ name: "", email: "", phone: "", message: "" });
     } else {
       alert("Something went wrong.");
     }
+    setLoading(false);
   };
 
   return (
@@ -100,9 +102,10 @@ export default function ContactPage() {
             type="submit"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-primary text-primary-foreground px-6 py-2 rounded-md shadow-md"
+            className={`w-full p-3 bg-primary text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+            disabled={loading}
           >
-            SEND
+            {loading ? "Sending..." : "Send Message"}
           </motion.button>
         </motion.form>
 
