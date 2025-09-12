@@ -27,6 +27,18 @@ import { HeroCarousel } from "@/components/hero-carousel";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Calendar, Car, Home } from "lucide-react";
+import { ImageLightbox } from "@/components/image-lightbox";
 
 const stats = [
   { icon: Building2, label: "Projects Completed", value: "150+" },
@@ -60,7 +72,33 @@ const values = [
     icon: Award,
   },
 ];
-
+const projects = [
+  {
+    id: 1,
+    title: "Geeta Residency",
+    location:
+      "Geeta Residency, Sahadevkhunta, Near Chandmari field. In front of Biswswar Shiva Temple.",
+    type: "Residential",
+    status: "Ongoing",
+    image: "/project1.jpg",
+    shortdesc:
+      "Premium 3BHK residences with spacious layouts, elegant finishes, and exclusive amenities, designed to offer modern luxury and a vibrant community lifestyle.",
+    description:
+      "Experience premium 3BHK residences thoughtfully designed to blend modern architecture with refined luxury. Each limited apartment offers spacious interiors, high-quality finishes, and access to exclusive amenities that redefine comfort and elegance. Nestled in a prime location, these homes provide the perfect balance of convenience, style, and a vibrant community atmosphere.",
+    completion: "Q2 2025",
+    floors: 25,
+    bhk: 3,
+    amenities: ["Lift", "Lobby", "24/7 Security"],
+    price: "Starting from $450,000",
+    progress: 65,
+    images: [
+      "/about_placeholder.png",
+      "/about_placeholder.png",
+      "/about_placeholder.png",
+      "/about_placeholder.png",
+    ],
+  },
+];
 const services = [
   {
     title: "Residential Development",
@@ -91,6 +129,17 @@ const services = [
 export default function HomePage() {
   const [FeaturedProjects, setFeaturedProjects] = useState<any[]>([]);
   const router = useRouter();
+  const [selectedProject, setSelectedProject] = useState<
+    (typeof projects)[0] | null
+  >(null);
+  const [enquiryForm, setEnquiryForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
 
   useEffect(() => {
     const fetchFeaturedProjects = async () => {
@@ -103,6 +152,20 @@ export default function HomePage() {
     };
     fetchFeaturedProjects();
   }, []);
+
+  const handleEnquirySubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const res = axios.post("/api/send-enquiry", {
+        project: selectedProject,
+        ...enquiryForm,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+    setEnquiryForm({ name: "", email: "", phone: "", message: "" });
+    setSelectedProject(null);
+  };
 
   // const projectsToDisplay = FeaturedProjects.length > 0 ? FeaturedProjects : featuredProjects;
 
@@ -210,7 +273,11 @@ export default function HomePage() {
                     <span className="text-sm font-medium">
                       {project.completion}
                     </span>
-                    <Button variant="outline" size="sm">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setSelectedProject(project)}
+                    >
                       Learn More
                     </Button>
                   </div>
@@ -314,21 +381,235 @@ export default function HomePage() {
             expertise and commitment to excellence.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="text-lg px-8">
-              <Mail className="h-5 w-5 mr-2" />
-              Get In Touch
-            </Button>
+<Button
+      asChild
+      size="lg"
+      variant="secondary"
+      className="text-lg px-8"
+    >
+      <a href="mailto:lifesparkinfra@gmail.com?subject=Enquring&body=My%20Enquiry%20is%20about">
+        <Mail className="h-5 w-5 mr-2" />
+        Get In Touch
+      </a>
+    </Button>
             <Button
-              size="lg"
-              variant="outline"
-              className="text-lg px-8 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary bg-transparent"
-            >
-              <Phone className="h-5 w-5 mr-2" />
-              Call Us Now
-            </Button>
+      asChild
+      size="lg"
+      variant="outline"
+      className="text-lg px-8 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary bg-transparent"
+    >
+      <a href="tel:+919692727075">
+        <Phone className="h-5 w-5 mr-2" />
+        Call Us Now
+      </a>
+    </Button>
           </div>
         </div>
       </section>
+
+      <Dialog
+        open={!!selectedProject}
+        onOpenChange={() => setSelectedProject(null)}
+      >
+        <DialogContent className="min-w-[80vw] min-h-[60vh] lg:min-w-[60vw]">
+          <ScrollArea className="h-[70vh] pr-4 md:h-full">
+            <DialogHeader>
+              <DialogTitle>Enquire About {selectedProject?.title}</DialogTitle>
+              <DialogDescription>
+                Share your details and we’ll get back to you with availability
+                and pricing.
+              </DialogDescription>
+            </DialogHeader>
+
+            {selectedProject && (
+              <div className="grid gap-6 md:flex lg:gap-12 my-10 md:my-6">
+                {/* Left: Enquiry Form */}
+                <form
+                  onSubmit={handleEnquirySubmit}
+                  className="space-y-4 mt-6 order-2 md:order-1 border p-6 rounded-md shadow-xl "
+                >
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Full Name</label>
+                      <Input
+                        required
+                        value={enquiryForm.name}
+                        onChange={(e) =>
+                          setEnquiryForm({
+                            ...enquiryForm,
+                            name: e.target.value,
+                          })
+                        }
+                        placeholder="Your full name"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">
+                        Phone Number
+                      </label>
+                      <Input
+                        required
+                        type="tel"
+                        value={enquiryForm.phone}
+                        onChange={(e) =>
+                          setEnquiryForm({
+                            ...enquiryForm,
+                            phone: e.target.value,
+                          })
+                        }
+                        placeholder="Your phone number"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Email Address</label>
+                    <Input
+                      required
+                      type="email"
+                      value={enquiryForm.email}
+                      onChange={(e) =>
+                        setEnquiryForm({
+                          ...enquiryForm,
+                          email: e.target.value,
+                        })
+                      }
+                      placeholder="your.email@example.com"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Message</label>
+                    <Textarea
+                      value={enquiryForm.message}
+                      required
+                      onChange={(e) =>
+                        setEnquiryForm({
+                          ...enquiryForm,
+                          message: e.target.value,
+                        })
+                      }
+                      placeholder="Tell us about your requirements, preferred unit size, budget, or any specific questions..."
+                      rows={6}
+                    />
+                  </div>
+                  <div className="flex gap-4 pt-2">
+                    <Button type="submit" className="flex-1">
+                      <Mail className="h-4 w-4 mr-2" />
+                      Send Enquiry
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setSelectedProject(null)}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </form>
+
+                {/* Right: Property Details + Gallery */}
+                <div className="order-1 md:order-2">
+                  <div className="space-y-4">
+                    <div className="space-y-1">
+                      <h3 className="text-xl font-semibold">
+                        {selectedProject.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground flex items-center gap-1">
+                        <MapPin className="h-4 w-4" />{" "}
+                        {selectedProject.location}
+                      </p>
+                    </div>
+
+                    {/* Image gallery */}
+                    <div className="grid grid-cols-3 gap-2">
+                      {selectedProject.images?.slice(0, 3).map((src, idx) => {
+                        const total = selectedProject.images?.length ?? 0;
+                        const showOverlay = idx === 2 && total > 3;
+                        const remaining = Math.max(0, total - 3);
+                        return (
+                          <button
+                            key={idx}
+                            type="button"
+                            onClick={() => {
+                              setLightboxIndex(idx);
+                              setLightboxOpen(true);
+                            }}
+                            className="relative group h-28 lg:h-[16rem] w-full overflow-hidden rounded"
+                            aria-label={`Open image ${idx + 1} of ${total}`}
+                          >
+                            <Image
+                              src={src || "/placeholder.svg"}
+                              alt={`${selectedProject.title} image ${idx + 1}`}
+                              width={1000}
+                              height={1000}
+                              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            />
+                            {showOverlay && (
+                              <div className="absolute inset-0 bg-black/60 text-white grid place-items-center text-sm font-medium">
+                                +{remaining}
+                              </div>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {/* Description and quick facts */}
+                    <p className="text-sm text-muted-foreground">
+                      {selectedProject.description}
+                    </p>
+
+                    <div className="grid grid-cols-3 gap-3 text-sm">
+                      <div className="flex items-center gap-2">
+                        <Home className="h-4 w-4 text-muted-foreground" />
+                        <span>{selectedProject.bhk} </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Car className="h-4 w-4 text-muted-foreground" />
+                        <span>{selectedProject.floors} Floors</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="font-semibold text-lg">
+                        {selectedProject.price}
+                      </span>
+                      <span className="text-muted-foreground flex items-center gap-1">
+                        <Calendar className="h-4 w-4" />
+                        {selectedProject.completion}
+                      </span>
+                    </div>
+
+                    {/* Amenities */}
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium">Amenities</p>
+                      <div className="flex flex-wrap gap-1">
+                        {selectedProject.amenities.map((a, i) => (
+                          <Badge
+                            key={i}
+                            variant="secondary"
+                            className="text-xs"
+                          >
+                            {a}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </ScrollArea>
+        </DialogContent>
+      </Dialog>
+
+      {selectedProject && (
+        <ImageLightbox
+          images={selectedProject.images || []}
+          initialIndex={lightboxIndex}
+          open={lightboxOpen}
+          onOpenChange={setLightboxOpen}
+        />
+      )}
     </div>
   );
 }
