@@ -10,6 +10,9 @@ import Navbar from "@/components/Navbar"
 export const metadata: Metadata = {
   title: "LifeSpark",
   description: "real estates",
+  icons: {
+    icon: "/logo.png",
+  },
 }
 
 export default function RootLayout({

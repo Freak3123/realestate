@@ -9,11 +9,10 @@ import Image from "next/image";
 
 const slides = [
   {
-    src: "/modern-real-estate-rendering.png",
-    alt: "Modern residential development render",
+    src: "/07.jpg", alt: "Modern residential development render",
   },
-  { src: "/modern-shopping-mall.png", alt: "Premium shopping mall exterior" },
-  { src: "/coastal-towers-mixed-use.png", alt: "Coastal mixed-use towers" },
+  { src: "/23.jpg", alt: "Premium shopping mall exterior" },
+  { src: "/36.jpg", alt: "Coastal mixed-use towers" },
 ];
 
 export function HeroCarousel() {
