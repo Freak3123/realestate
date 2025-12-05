@@ -47,13 +47,15 @@ export function ImageLightbox({
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 text-white/80 hover:text-white">
-              ‹
-            </CarouselPrevious>
-            <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 text-white/80 hover:text-white">
-              ›
-            </CarouselNext>
-          </Carousel>          
+            <CarouselPrevious
+              variant="ghost"
+              className="absolute left-4 top-1/2 -translate-y-1/2 h-12 w-12 rounded-full border border-white/20 bg-black/40 text-white hover:bg-black/60 hover:text-white"
+            />
+            <CarouselNext
+              variant="ghost"
+              className="absolute right-4 top-1/2 -translate-y-1/2 h-12 w-12 rounded-full border border-white/20 bg-black/40 text-white hover:bg-black/60 hover:text-white"
+            />
+          </Carousel>
         </div>
         <DialogTitle />
       </DialogContent>
