@@ -1,6 +1,5 @@
-import { NextAuthOptions, Session } from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import axios from "axios";
 
 // Extend the Session type to include user.id
 declare module "next-auth" {
@@ -23,27 +22,26 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials) return null;
+        if (!credentials?.username || !credentials?.password) return null;
 
-        try {
-          const res = await axios.post(
-            `${process.env.NEXTAUTH_URL}/api/admin/login`,
-            {
-              username: credentials.username,
-              password: credentials.password,
-            }
-          );
+        const adminName = process.env.ADMIN_NAME;
+        const adminPassword = process.env.ADMIN_PASSWORD;
 
-          console.log(res.data.message);
-          return { id: credentials.username };
-        } catch (error) {
-          if (axios.isAxiosError(error)) {
-            console.error("Login failed:", error.response?.data || error.message);
-          } else {
-            console.error("Unexpected error:", error);
-          }
+        // Check if environment variables are set
+        if (!adminName || !adminPassword) {
+          console.error("Admin credentials not set in environment variables");
           return null;
         }
+
+        if (
+          credentials.username === adminName &&
+          credentials.password === adminPassword
+        ) {
+          return { id: credentials.username, name: credentials.username };
+        }
+
+        console.error("Invalid credentials");
+        return null;
       },
     }),
   ],
@@ -56,13 +54,16 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      if (token && session.user) session.user.id = String(token.id);
+      if (token && session.user) {
+        session.user.id = String(token.id);
+        session.user.name = String(token.id);
+      }
       return session;
     },
   },
 
   pages: {
-    signIn: "/login",
+    signIn: "/admin/login",
   },
 
   secret: process.env.NEXTAUTH_SECRET,
