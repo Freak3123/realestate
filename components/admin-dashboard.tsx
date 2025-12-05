@@ -121,7 +121,7 @@ export function AdminDashboard() {
     fetchProjects();
 
     setIsLoading(false);
-        
+
   }, []);
 
   if (isLoading) {
@@ -129,7 +129,8 @@ export function AdminDashboard() {
       <div className="min-h-screen flex items-center justify-center">
         <LoaderComp />
       </div>
-    );}
+    );
+  }
 
   const showAlert = (type: "success" | "error", message: string) => {
     setAlert({ type, message });
@@ -137,30 +138,30 @@ export function AdminDashboard() {
   };
 
   const handleDeleteProject = async (id: string) => {
-    try{
-      const res= await axios.delete(`/api/admin/save-proj?id=${id}`);
-      if (res.status===200){
+    try {
+      const res = await axios.delete(`/api/admin/save-proj?id=${id}`);
+      if (res.status === 200) {
         const newProjects = projects.filter((p) => p._id !== id);
         setProjects(newProjects);
         showAlert("success", "Project deleted successfully");
       }
 
-    }catch(err){
+    } catch (err) {
       console.log(err)
       showAlert("error", "Error deleting project");
     }
   };
 
   const handleDeleteEnquiry = async (id: string) => {
-    try{
+    try {
 
-      const res= await axios.delete(`/api/admin/enquiries?id=${id}`);
-      if (res.status===200){
+      const res = await axios.delete(`/api/admin/enquiries?id=${id}`);
+      if (res.status === 200) {
         const newEnquiries = enquiries.filter((e) => e._id !== id);
         setEnquiries(newEnquiries);
         showAlert("success", "Enquiry deleted successfully");
       }
-    }catch(err){
+    } catch (err) {
       console.log(err)
       showAlert("error", "Error deleting enquiry");
     }
@@ -197,7 +198,7 @@ export function AdminDashboard() {
       <header className="border-b  bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40">
         <div className="flex h-16 items-center justify-between px-6">
           <div className="flex items-center gap-6">
-            
+
             <nav className="hidden md:flex items-center gap-6 ">
               <Button
                 variant={activeTab === "overview" ? "default" : "ghost"}
@@ -358,7 +359,7 @@ export function AdminDashboard() {
                           {enquiry.projectTitle}
                         </p>
                       </div>
-                      
+
                     </div>
                   ))}
                 </CardContent>
@@ -480,16 +481,16 @@ export function AdminDashboard() {
                       <div>
                         <CardTitle className="flex justify-between items-center gap-2">
                           {enquiry.name}
-                          
-                          
+
+
                         </CardTitle>
                         <CardDescription className="flex w-full justify-evenly">
                           <div>
-                          Interested in {enquiry.projectTitle} • {enquiry.date}
+                            Interested in {enquiry.projectTitle} • {enquiry.date}
                           </div>
-                          
+
                         </CardDescription>
-                        
+
                       </div>
                       <div className="flex gap-2">
                         <Button
@@ -558,7 +559,7 @@ export function AdminDashboard() {
 
 // Project Form Dialog Component
 function ProjectFormDialog({
-
+  project,
   isOpen,
   onClose,
   onSave,
@@ -572,10 +573,10 @@ function ProjectFormDialog({
     title: "",
     location: "",
     type: "Residential",
-    image:"",
+    image: "",
     status: "Ongoing",
     description: "",
-    shortdesc:"",
+    shortdesc: "",
     completion: "",
     bhk: "",
     floors: 0,
@@ -588,9 +589,20 @@ function ProjectFormDialog({
   const [amenity, setAmenity] = useState("");
   const [amenities, setAmenities] = useState<string[]>([]);
   const [images, setImages] = useState<File[]>([]);
-  const [ isUploading, setUploading] = useState(false);
-  
+  const [isUploading, setUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const router = useRouter();
+
+  // Reset form when dialog opens/closes or project changes
+  useEffect(() => {
+    if (isOpen) {
+      setError(null);
+      setUploading(false);
+      // If editing, you might want to populate formData here
+      // For now, we'll keep the existing logic or lack thereof for editing population if it was handled outside
+    }
+  }, [isOpen]);
 
 
   const handleAddAmenity = () => {
@@ -602,38 +614,67 @@ function ProjectFormDialog({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+
+    // Basic Validation
+    if (!formData.title || !formData.location || !formData.description) {
+      setError("Please fill in all required fields.");
+      return;
+    }
+
+    if (images.length === 0 && !project) { // Only require images for new projects
+      setError("Please select at least one image.");
+      return;
+    }
 
     try {
       setUploading(true);
-      const form = new FormData();
-      images.forEach((file) => form.append("files", file));
-      form.append("title", formData.title);
-      
+      let imageUrls: string[] = [];
+      let mainImageUrl = "";
 
-      const res = await fetch("/api/upload", { method: "POST", body: form });
+      // Upload images if any
+      if (images.length > 0) {
+        const form = new FormData();
+        images.forEach((file) => form.append("files", file));
 
-      if (!res.ok) throw new Error(`Upload failed: ${res.statusText}`);
+        const res = await fetch("/api/upload", { method: "POST", body: form });
 
-      const { urls } = await res.json();
+        if (!res.ok) {
+          const errorData = await res.json().catch(() => ({}));
+          throw new Error(errorData.error || `Upload failed: ${res.statusText}`);
+        }
 
-      const imageUrl=urls[0] || "";
+        const { urls } = await res.json();
+        imageUrls = urls;
+        mainImageUrl = urls[0] || "";
+      }
 
-      const payload = { ...formData, amenities, images: urls, image:imageUrl };
+      // Prepare payload
+      // If editing, we might want to keep existing images if no new ones are uploaded
+      // But for now, following the existing logic structure
+      const payload = {
+        ...formData,
+        amenities,
+        images: imageUrls.length > 0 ? imageUrls : formData.images, // Use new images or fallback
+        image: mainImageUrl || formData.image // Use new main image or fallback
+      };
 
       console.log("Payload to save:", payload);
 
       const saveRes = await axios.post("/api/admin/save-proj", payload);
-      
 
       if (saveRes.status === 201 || saveRes.status === 200) {
-        window.location.reload();  
-        
+        onSave(saveRes.data.data || payload); // Call onSave to update parent state
+        // window.location.reload(); // Avoid full reload if possible, let parent handle it
+      } else {
+        throw new Error(`Failed to save project: ${saveRes.statusText}`);
       }
 
-      setUploading(false);
-
-    } catch (err) {
+    } catch (err: any) {
       console.error("Error saving project:", err);
+      setError(err.message || "An unexpected error occurred while saving the project.");
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -642,12 +683,19 @@ function ProjectFormDialog({
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
-            Add New Project
+            {project ? "Edit Project" : "Add New Project"}
           </DialogTitle>
           <DialogDescription>
-            Create a new real estate project
+            {project ? "Update existing project details" : "Create a new real estate project"}
           </DialogDescription>
         </DialogHeader>
+
+        {error && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
@@ -680,7 +728,7 @@ function ProjectFormDialog({
               <Label htmlFor="type">Type</Label>
               <Select
                 value={formData.type}
-                onValueChange={(value: Project["type"]) =>
+                onValueChange={(value: any) =>
                   setFormData({ ...formData, type: value })
                 }
               >
@@ -698,7 +746,7 @@ function ProjectFormDialog({
               <Label htmlFor="status">Status</Label>
               <Select
                 value={formData.status}
-                onValueChange={(value: Project["status"]) =>
+                onValueChange={(value: any) =>
                   setFormData({ ...formData, status: value })
                 }
               >
@@ -726,9 +774,9 @@ function ProjectFormDialog({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="shortdesc">Short Description</Label>
             <Textarea
-              id="description"
+              id="shortdesc"
               value={formData.shortdesc}
               onChange={(e) =>
                 setFormData({ ...formData, shortdesc: e.target.value })
@@ -878,10 +926,17 @@ function ProjectFormDialog({
           )}
 
           <div className="flex gap-4 pt-4">
-            <Button type="submit" className="flex-1">
-              {isUploading?"Uploading...":"Add Project"}
+            <Button type="submit" className="flex-1" disabled={isUploading}>
+              {isUploading ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  {project ? "Updating..." : "Creating..."}
+                </>
+              ) : (
+                project ? "Update Project" : "Add Project"
+              )}
             </Button>
-            <Button type="button" variant="outline" onClick={onClose}>
+            <Button type="button" variant="outline" onClick={onClose} disabled={isUploading}>
               Cancel
             </Button>
           </div>
