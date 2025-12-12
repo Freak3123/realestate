@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -29,15 +30,16 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [mobileOpen]);
 
-  // helper to check active link
-  const linkClass = (href: string) =>
-    pathname === href
-      ? "text-foreground"
-      : "text-muted-foreground hover:text-primary transition-colors";
+  const navLinks = [
+    { href: "/", label: "Home" },
+    { href: "/projects", label: "Projects" },
+    { href: "/about", label: "About" },
+  ];
+
+  const isActive = (path: string) => pathname === path;
 
   return (
-    // <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 sticky top-0 z-50">
-    <nav className="border-b bg-white sticky top-0 z-50">
+    <nav className="border-b bg-background/80 backdrop-blur-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -46,8 +48,9 @@ const Navbar = () => {
               <Image
                 src="/logo.png"
                 alt="PrimeRealty Logo"
-                width={180}
-                height={180}
+                width={150}
+                height={50}
+                className="h-10 w-auto object-contain"
                 priority
               />
             </Link>
@@ -55,22 +58,24 @@ const Navbar = () => {
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
-            <Link href="/" className={linkClass("/")}>
-              Home
-            </Link>
-            <Link href="/projects" className={linkClass("/projects")}>
-              Projects
-            </Link>
-            <Link href="/about" className={linkClass("/about")}>
-              About
-            </Link>
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`text-sm font-medium transition-colors hover:text-primary ${isActive(link.href) ? "text-foreground" : "text-muted-foreground"
+                  }`}
+              >
+                {link.label}
+              </Link>
+            ))}
             <Link href="/contact-us">
               <Button
                 size="sm"
+                variant={isActive("/contact-us") ? "default" : "outline"}
                 className={
-                  pathname === "/contact-us"
-                    ? "bg-primary text-white hover:bg-primary/90 border"
-                    : "border border-input bg-background text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                  !isActive("/contact-us")
+                    ? "text-muted-foreground hover:text-foreground"
+                    : ""
                 }
               >
                 <Phone className="h-4 w-4 mr-2" />
@@ -83,7 +88,8 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="p-2 rounded-md text-foreground hover:bg-muted focus:outline-none"
+              className="p-2 rounded-md text-foreground hover:bg-muted focus:outline-none transition-colors"
+              aria-label="Toggle menu"
             >
               {mobileOpen ? (
                 <X className="h-6 w-6" />
@@ -96,47 +102,46 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
-      {mobileOpen && (
-        <div
-          ref={menuRef}
-          className="md:hidden border-t bg-background px-4 py-4 space-y-4"
-        >
-          <Link
-            href="/"
-            onClick={() => setMobileOpen(false)}
-            className={linkClass("/")}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            ref={menuRef}
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
+            className="md:hidden border-b bg-background overflow-hidden"
           >
-            Home
-          </Link>
-          <Link
-            href="/projects"
-            onClick={() => setMobileOpen(false)}
-            className={linkClass("/projects")}
-          >
-            Projects
-          </Link>
-          <Link
-            href="/about"
-            onClick={() => setMobileOpen(false)}
-            className={linkClass("/about")}
-          >
-            About
-          </Link>
-          <Link href="/contact-us" onClick={() => setMobileOpen(false)}>
-            <Button
-              size="sm"
-              className={`w-full ${
-                pathname === "/contact-us"
-                  ? "bg-primary text-white hover:bg-primary/90"
-                  : "border border-input bg-background hover:bg-accent hover:text-accent-foreground"
-              }`}
-            >
-              <Phone className="h-4 w-4 mr-2" />
-              Contact
-            </Button>
-          </Link>
-        </div>
-      )}
+            <div className="px-4 py-6 space-y-4 flex flex-col">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={`text-lg font-medium transition-colors px-2 py-1 rounded-md hover:bg-muted ${isActive(link.href)
+                      ? "text-primary bg-primary/10"
+                      : "text-foreground"
+                    }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <div className="pt-2">
+                <Link href="/contact-us" onClick={() => setMobileOpen(false)}>
+                  <Button
+                    className="w-full"
+                    size="lg"
+                    variant={isActive("/contact-us") ? "default" : "outline"}
+                  >
+                    <Phone className="h-4 w-4 mr-2" />
+                    Contact Us
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };

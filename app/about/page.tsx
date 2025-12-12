@@ -163,22 +163,22 @@ const milestones = [
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background">
-      <div className="w-full h-[20rem]">
+      <div className="w-full h-48 sm:h-80 md:h-[20rem]">
         <Image
           src="/image.png"
           alt="headquarters"
           width={2000}
           height={2000}
-          className="object-cover w-full h-[20rem] "
+          className="object-cover w-full h-full"
         />
       </div>
 
       {/* Header */}
-      <AnimatedSection className="py-16 bg-gradient-to-br from-background to-muted/20">
+      <AnimatedSection className="py-12 md:py-16 bg-gradient-to-br from-background to-muted/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <h1 className="text-4xl lg:text-6xl font-bold text-foreground">
+              <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-foreground">
                 Building Dreams, Creating Communities
               </h1>
               <p className="text-xl text-muted-foreground leading-relaxed">
@@ -191,7 +191,7 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="relative">
-              <div className="w-[480px] h-[270px] overflow-hidden">
+              <div className="w-full max-w-[480px] aspect-video overflow-hidden mx-auto lg:mx-0">
                 <Lottie animationData={animationData} loop={true} />
               </div>
             </div>
@@ -200,11 +200,11 @@ export default function AboutPage() {
       </AnimatedSection>
 
       {/* Company Story */}
-      <AnimatedSection className="py-20 bg-background">
+      <AnimatedSection className="py-12 md:py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-6">
-              <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">
                 From Vision to Reality
               </h2>
               <div className="space-y-4 text-muted-foreground leading-relaxed">
@@ -251,16 +251,16 @@ export default function AboutPage() {
       </AnimatedSection>
 
       {/* Values */}
-      <AnimatedSection className="py-20 bg-primary">
+      <AnimatedSection className="py-12 md:py-20 bg-primary">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-16">
             <Badge variant="secondary" className="w-fit mx-auto">
               Our Values
             </Badge>
-            <h2 className="text-3xl lg:text-4xl font-bold text-primary-foreground">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary-foreground">
               What Drives Us
             </h2>
-            <p className="text-xl text-primary-foreground/90 max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl text-primary-foreground/90 max-w-3xl mx-auto">
               Our core values guide every decision we make and every project we
               undertake.
             </p>
@@ -280,16 +280,16 @@ export default function AboutPage() {
       </AnimatedSection>
 
       {/* Team */}
-      <AnimatedSection className="py-20 bg-background">
+      <AnimatedSection className="py-12 md:py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-16">
             <Badge variant="secondary" className="w-fit mx-auto">
               Our Team
             </Badge>
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">
               Meet the Experts
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto">
               Our diverse team of professionals brings together decades of
               experience in real estate development, architecture, and project
               management.
@@ -380,12 +380,12 @@ export default function AboutPage() {
       </AnimatedSection> */}
 
       {/* CTA */}
-      <AnimatedSection className="py-20 bg-primary text-primary-foreground">
+      <AnimatedSection className="py-12 md:py-20 bg-primary text-primary-foreground">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
-          <h2 className="text-3xl lg:text-4xl font-bold">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
             Ready to Work With Us?
           </h2>
-          <p className="text-xl text-primary-foreground/90">
+          <p className="text-lg sm:text-xl text-primary-foreground/90">
             Whether you're looking to invest, partner, or find your dream
             property, we're here to help make it happen.
           </p>
