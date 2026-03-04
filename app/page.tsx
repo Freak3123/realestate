@@ -100,7 +100,6 @@ const projects = [
     floors: 25,
     bhk: 3,
     amenities: ["Lift", "Lobby", "24/7 Security"],
-    price: "Starting from $450,000",
     progress: 65,
     images: [
       "/about_placeholder.png",

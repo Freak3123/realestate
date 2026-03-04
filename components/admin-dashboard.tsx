@@ -63,7 +63,7 @@ interface Project {
   completion: string;
   bhk: string;
   floors: number;
-  price: string;
+  price?: string;
   progress: number;
   image?: string;
   images?: string[];
@@ -854,7 +854,7 @@ function ProjectFormDialog({
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <Label htmlFor="price">Price</Label>
               <Input
                 id="price"
@@ -865,7 +865,7 @@ function ProjectFormDialog({
                 placeholder="Starting from $450,000"
                 required
               />
-            </div>
+            </div> */}
             <div className="space-y-2">
               <Label htmlFor="completion">Completion</Label>
               <Input
