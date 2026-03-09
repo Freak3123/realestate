@@ -98,6 +98,7 @@ const projects = [
       "Experience premium 3BHK residences thoughtfully designed to blend modern architecture with refined luxury. Each limited apartment offers spacious interiors, high-quality finishes, and access to exclusive amenities that redefine comfort and elegance. Nestled in a prime location, these homes provide the perfect balance of convenience, style, and a vibrant community atmosphere.",
     completion: "Q2 2025",
     floors: 25,
+    units: 120,
     bhk: 3,
     amenities: ["Lift", "Lobby", "24/7 Security"],
     progress: 65,
@@ -361,15 +362,16 @@ export default function HomePage() {
                 key={index}
                 variants={cardVariants}
                 transition={{ duration: 0.5, ease: "easeOut" }}
+                className="h-full"
               >
-                <Card className="text-center p-8 hover:shadow-2xl transition-all duration-300 group cursor-pointer border border-border/50 hover:border-primary/40 bg-background dark:bg-card">
+                <Card className="h-full text-center p-8 hover:shadow-2xl transition-all duration-300 group cursor-pointer border border-border/50 hover:border-primary/40 bg-background dark:bg-card flex flex-col">
                   <CardHeader>
                     <div className="h-14 w-14 mx-auto mb-4 rounded-none bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-colors duration-300">
                       <value.icon className="h-7 w-7 text-primary group-hover:text-primary-foreground transition-colors duration-300" />
                     </div>
                     <CardTitle className="text-xl font-serif font-medium group-hover:text-primary transition-colors">{value.title}</CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="flex-1">
                     <p className="text-muted-foreground !text-justify">{value.description}</p>
                   </CardContent>
                 </Card>
