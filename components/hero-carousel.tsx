@@ -68,7 +68,7 @@ export function HeroCarousel({ title, subtitle, images }: HeroCarouselProps) {
               }
               transition={{ duration: 0.6, ease: "easeOut" }}
               viewport={{ once: true }}
-              className="text-justify text-pretty text-3xl font-serif font-semibold md:text-5xl lg:text-6xl tracking-tight drop-shadow-md"
+              className="text-pretty text-3xl font-serif font-semibold md:text-5xl lg:text-6xl tracking-tight drop-shadow-md"
             >
               {title || "Shaping skylines with\nprecision, quality & trust."}
             </motion.h1>
@@ -80,7 +80,7 @@ export function HeroCarousel({ title, subtitle, images }: HeroCarouselProps) {
               }
               transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
               viewport={{ once: true }}
-              className="text-justify mt-4 max-w-lg text-sm leading-relaxed text-slate-300 md:text-base"
+              className="mt-4 max-w-lg text-sm leading-relaxed text-slate-300 md:text-base"
             >
               {subtitle || "Premium residential and mixed-use developments delivered on time with rigorous quality standards."}
             </motion.p>

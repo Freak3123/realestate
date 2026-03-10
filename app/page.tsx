@@ -240,7 +240,7 @@ export default function HomePage() {
             <h2 className="text-3xl lg:text-5xl font-serif font-semibold whitespace-pre-line tracking-tight">
               {siteContent?.homeJourney?.title || "Our Journey of Transformation"}
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl text-justify">
+            <p className="text-lg text-muted-foreground max-w-2xl">
               {siteContent?.homeJourney?.description ||
                 `Our journey began in 2022, when we incorporated the company in Odisha with a vision to redefine infrastructure consulting. By 2023, we had taken on our first major consulting assignments across residential and commercial projects, marking an important milestone in our growth. In 2024, we expanded our services to offer complete project management and execution support, strengthening our role as a trusted partner in the real estate sector. The year 2025 saw us diversifying into civil infrastructure projects and extending our regional presence, further solidifying our commitment to building lasting value for our clients and communities.`}
             </p>
@@ -372,7 +372,7 @@ export default function HomePage() {
                     <CardTitle className="text-xl font-serif font-medium group-hover:text-primary transition-colors">{value.title}</CardTitle>
                   </CardHeader>
                   <CardContent className="flex-1">
-                    <p className="text-muted-foreground !text-justify">{value.description}</p>
+                    <p className="text-muted-foreground">{value.description}</p>
                   </CardContent>
                 </Card>
               </motion.div>
